@@ -6,7 +6,7 @@ import { HomePage } from "./home/home-page";
 import { PostsList } from "./posts/posts-list";
 
 const theme = createTheme({
-  fontFamily: "Montserrat, sans-serif",
+  fontFamily: "Poppins, sans-serif",
   defaultRadius: "md",
 });
 
