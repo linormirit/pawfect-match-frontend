@@ -1,4 +1,4 @@
-import { Flex } from "@mantine/core";
+import { Card } from "@mantine/core";
 
 import { PostHeader } from "./post-header";
 import { Post as PostType } from "../../types/post";
@@ -8,12 +8,12 @@ const Post: React.FC<PostType> = ({userId}) => {
   const user = getUserById(userId);
 
   return (
-    <Flex>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
       <PostHeader
         username={user.username}
         avatarUrl={user.avatarUrl}
       ></PostHeader>
-    </Flex>
+    </Card>
   );
 };
 

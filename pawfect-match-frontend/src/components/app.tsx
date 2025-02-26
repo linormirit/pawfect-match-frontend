@@ -1,5 +1,9 @@
 import "@mantine/core/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { HomePage } from "./home/home-page";
+import { PostsList } from "./posts/posts-list";
 
 const theme = createTheme({
   fontFamily: "Montserrat, sans-serif",
@@ -7,8 +11,16 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
-  return <MantineProvider theme={theme}>
-  </MantineProvider>;
+  return (
+    <MantineProvider theme={theme}>
+      <HomePage />
+      <Router>
+        <Routes>
+          <Route path="/overview" element={<PostsList />}></Route>
+        </Routes>
+      </Router>
+    </MantineProvider>
+  );
 };
 
 export { App };
