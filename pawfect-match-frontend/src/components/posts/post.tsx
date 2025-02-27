@@ -8,7 +8,7 @@ const Post: React.FC<PostType> = ({ userId, imageUrl }) => {
   const user = getUserById(userId);
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow={"sm"} padding={"lg"} radius={"md"} withBorder>
       <Card.Section>
         <PostHeader
           username={user.username}

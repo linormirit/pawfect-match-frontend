@@ -1,5 +1,7 @@
 import { useForm } from "@mantine/form";
-import { Button, Card, Stack, TextInput } from "@mantine/core";
+import { Button, Card, Group, Stack, TextInput } from "@mantine/core";
+
+import { pawGreen } from "../../consts";
 
 const LoginForm: React.FC = () => {
   const form = useForm({
@@ -23,7 +25,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder>
+    <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Stack>
           <TextInput
@@ -41,6 +43,14 @@ const LoginForm: React.FC = () => {
             error={form.errors.password}
           />
           <Button type="submit">Log In</Button>
+
+          <Card.Section withBorder inheritPadding>
+            <Group justify="center" mt={"sm"} mb={"sm"}>
+              <Button type="button" color={pawGreen}>
+                Sign Up
+              </Button>
+            </Group>
+          </Card.Section>
         </Stack>
       </form>
     </Card>
