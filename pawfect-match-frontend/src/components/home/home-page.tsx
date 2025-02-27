@@ -1,16 +1,17 @@
-import { Card, Flex, Image, Text } from "@mantine/core";
+import { Flex, Image, Stack, Text } from "@mantine/core";
 
 import { HomeTitle } from "./home-title";
 import { pawGreen } from "../../consts";
 import { homePageSubText, homePageText } from "../../strings";
+import { LoginForm } from "./login-form";
 
 const HomePage: React.FC = () => {
   return (
-    <Flex h={"100%"} mt={200} align={'center'}>
-      <Flex h={"100%"} w={'50%'}>
-        <Card shadow="sm" padding="lg" radius="md" withBorder></Card>
+    <Flex h={"100%"} mt={200} align={"center"}>
+      <Flex h={"100%"}>
+        <LoginForm />
       </Flex>
-      <Flex direction={"column"} h={"100%"} justify={"flex-end"}>
+      <Stack h={"100%"}>
         <Flex gap={8} align={"center"}>
           <HomeTitle />
           <Image
@@ -19,9 +20,13 @@ const HomePage: React.FC = () => {
             style={{ transform: "rotate(15deg)" }}
           ></Image>
         </Flex>
-        <Text style={{color: pawGreen, fontSize: '30px'}}>{homePageText}</Text>
-        <Text style={{color: pawGreen, fontSize: '30px'}}>{homePageSubText}</Text>
-      </Flex>
+        <Text style={{ color: pawGreen, fontSize: "30px" }}>
+          {homePageText}
+        </Text>
+        <Text style={{ color: pawGreen, fontSize: "30px" }}>
+          {homePageSubText}
+        </Text>
+      </Stack>
     </Flex>
   );
 };
