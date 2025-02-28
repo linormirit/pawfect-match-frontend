@@ -10,13 +10,6 @@ const LoginForm: React.FC = () => {
       email: "",
       password: "",
     },
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      password: (value) =>
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(value)
-          ? null
-          : "Password must contain at least 8 characters, upper and lower case letters, numbers and special characters",
-    },
   });
 
   const handleSubmit = (values: { email: string; password: string }) => {
@@ -33,14 +26,12 @@ const LoginForm: React.FC = () => {
             placeholder="your@email.com"
             key={form.key("email")}
             {...form.getInputProps("email")}
-            error={form.errors.email}
           />
           <TextInput
             label="Password"
             placeholder="password"
             key={form.key("password")}
             {...form.getInputProps("password")}
-            error={form.errors.password}
           />
           <Button type="submit">Log In</Button>
 
