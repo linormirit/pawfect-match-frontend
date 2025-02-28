@@ -1,9 +1,12 @@
 import { useForm } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, Group, Stack, TextInput } from "@mantine/core";
 
 import { pawGreen } from "../../consts";
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -15,6 +18,10 @@ const LoginForm: React.FC = () => {
   const handleSubmit = (values: { email: string; password: string }) => {
     console.log(form.errors);
     console.log(values);
+  };
+
+  const goToSignUp = () => {
+    navigate("/signup");
   };
 
   return (
@@ -37,7 +44,7 @@ const LoginForm: React.FC = () => {
 
           <Card.Section withBorder inheritPadding>
             <Group justify="center" mt={"sm"} mb={"sm"}>
-              <Button type="button" color={pawGreen}>
+              <Button type="button" color={pawGreen} onClick={goToSignUp}>
                 Sign Up
               </Button>
             </Group>

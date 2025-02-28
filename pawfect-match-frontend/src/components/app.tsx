@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { HomePage } from "./home/home-page";
 import { PostsList } from "./posts/posts-list";
+import { SignUpForm } from "./home/sign-up-form";
 
 const theme = createTheme({
   fontFamily: "Poppins, sans-serif",
@@ -13,10 +14,11 @@ const theme = createTheme({
 const App: React.FC = () => {
   return (
     <MantineProvider theme={theme}>
-      <HomePage />
       <Router>
         <Routes>
-          <Route path="/overview" element={<PostsList />}></Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/overview" element={<PostsList />} />
         </Routes>
       </Router>
     </MantineProvider>

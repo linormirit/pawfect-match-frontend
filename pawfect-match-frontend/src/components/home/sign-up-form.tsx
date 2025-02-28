@@ -1,5 +1,12 @@
+import {
+  Button,
+  Card,
+  FileInput,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Button, Card, FileInput, Stack, TextInput } from "@mantine/core";
 
 const SignUpForm: React.FC = () => {
   const form = useForm({
@@ -26,45 +33,56 @@ const SignUpForm: React.FC = () => {
     console.log(values);
   };
 
+  const createConfirmPasswordError = () => {
+    if (form.getValues().password) {
+      return form.getValues().confirmPassword === form.getValues().password
+        ? null
+        : "Password was not confirmed";
+    } else {
+      return null;
+    }
+  };
+
   return (
-    <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
-      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-        <Stack>
-          <TextInput
-            label="Email"
-            placeholder="your@email.com"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            error={form.errors.email}
-          />
-          <TextInput
-            label="Username"
-            placeholder="user_name"
-            key={form.key("username")}
-            {...form.getInputProps("username")}
-            error={form.errors.username}
-          />
-          <FileInput
-            label="Avatar"
-            placeholder="Choose your avatar"
-          />
-          <TextInput
-            label="Password"
-            placeholder="password"
-            key={form.key("password")}
-            {...form.getInputProps("password")}
-            error={form.errors.password}
-          />
-          <TextInput
-            label="Confirm password"
-            placeholder="confirm password"
-            key={form.key("confirmPassword")}
-            {...form.getInputProps("confirmPassword")}
-          />
-          <Button type="submit">Sign Up</Button>
-        </Stack>
-      </form>
-    </Card>
+    <Stack align={"center"} justify={"center"} mt={100}>
+      <Title>Sign Up</Title>
+      <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
+        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+          <Stack>
+            <TextInput
+              label="Email"
+              placeholder="your@email.com"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+              error={form.errors.email}
+            />
+            <TextInput
+              label="Username"
+              placeholder="user_name"
+              key={form.key("username")}
+              {...form.getInputProps("username")}
+              error={form.errors.username}
+            />
+            <FileInput label="Avatar" placeholder="Choose your avatar" />
+            <TextInput
+              label="Password"
+              placeholder="password"
+              key={form.key("password")}
+              {...form.getInputProps("password")}
+              error={form.errors.password}
+            />
+            <TextInput
+              label="Confirm password"
+              placeholder="confirm password"
+              key={form.key("confirmPassword")}
+              {...form.getInputProps("confirmPassword")}
+              error={createConfirmPasswordError()}
+            />
+            <Button type="submit">Sign Up</Button>
+          </Stack>
+        </form>
+      </Card>
+    </Stack>
   );
 };
 

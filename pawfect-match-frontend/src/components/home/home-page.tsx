@@ -7,7 +7,7 @@ import { LoginForm } from "./login-form";
 
 const HomePage: React.FC = () => {
   return (
-    <Flex h={"100%"} mt={240} gap={60} align={"center"} justify={'center'}>
+    <Flex h={"100%"} mt={240} gap={60} align={"center"} justify={"center"}>
       <Flex h={"100%"}>
         <LoginForm />
       </Flex>
