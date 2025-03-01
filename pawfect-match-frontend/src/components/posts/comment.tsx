@@ -8,7 +8,7 @@ const Comment: React.FC<
   return (
     <Flex gap={"sm"}>
       <Text style={{ fontWeight: "bold" }}>{username}</Text>
-      <Text>{content}</Text>
+      <Text style={{ overflowWrap: "break-word" }}>{content}</Text>
     </Flex>
   );
 };
