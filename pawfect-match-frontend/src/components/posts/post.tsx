@@ -1,6 +1,6 @@
 import { isNil } from "lodash";
 import { useEffect, useState } from "react";
-import { Card, Image, Text } from "@mantine/core";
+import { Card, Flex, Image, Text } from "@mantine/core";
 
 import { User } from "../../types/user";
 import { PostHeader } from "./post-header";
@@ -29,7 +29,10 @@ const Post: React.FC<PostType> = ({ userId, imageUrl, content, likedBy }) => {
         </Card.Section>
         <Card.Section>
           <PostFooter userId={userId} likedBy={likedBy} />
-          <Text p={"md"}>{content}</Text>
+          <Flex align={"center"} gap={"sm"} px={"sm"}>
+            <Text style={{ fontWeight: "bold" }}>{user.username}</Text>
+            <Text>{content}</Text>
+          </Flex>
         </Card.Section>
       </Card>
     )
