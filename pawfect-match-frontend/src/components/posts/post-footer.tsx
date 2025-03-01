@@ -1,16 +1,18 @@
-import { ThemeIcon } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
+import { Modal, ThemeIcon } from "@mantine/core";
 import { Flex, Stack, Text } from "@mantine/core";
 import { IconPaw, IconPawFilled, IconMessageCircle } from "@tabler/icons-react";
 
 import { Post } from "../../types/post";
 import { pawGray, pawGreen } from "../../consts";
+import { Comments } from "./comments";
 
-const PostFooter: React.FC<Pick<Post, "userId" | "likedBy">> = ({
-  userId,
-  likedBy,
-}) => {
+const PostFooter: React.FC<
+  Pick<Post, "id" | "userId" | "likedBy"> & { username: string }
+> = ({ id, userId, likedBy, username }) => {
   const [isLiked, setIsLiked] = useState<boolean>();
+  const [commentsOpened, { open, close }] = useDisclosure(false);
 
   const handlePawClick = () => {
     setIsLiked((isLiked) => !isLiked);
@@ -47,9 +49,13 @@ const PostFooter: React.FC<Pick<Post, "userId" | "likedBy">> = ({
           <IconMessageCircle
             stroke={1.5}
             cursor={"pointer"}
+            onClick={open}
             style={{ height: "70%", width: "70%" }}
           />
         </ThemeIcon>
+        <Modal opened={commentsOpened} onClose={close}>
+          <Comments postId={id} username={username} />
+        </Modal>
       </Flex>
       <Flex align={"center"}>
         <ThemeIcon variant={"white"} size={40}>

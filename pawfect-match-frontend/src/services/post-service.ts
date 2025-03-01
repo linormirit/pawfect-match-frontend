@@ -8,7 +8,7 @@ const fetchPosts = (): Post[] => {
       userId: "1",
       content: "Hi my corgi Max is looking for a new loving home!",
       imageUrl: "../src/assets/corgi.jpg",
-      likedBy: ["1"],
+      likedBy: ["2"],
       lastUpdated: new Date(),
     },
     {

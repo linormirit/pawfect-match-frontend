@@ -8,7 +8,13 @@ import { PostFooter } from "./post-footer";
 import { Post as PostType } from "../../types/post";
 import { getUserById } from "../../services/user-service";
 
-const Post: React.FC<PostType> = ({ userId, imageUrl, content, likedBy }) => {
+const Post: React.FC<PostType> = ({
+  id,
+  userId,
+  imageUrl,
+  content,
+  likedBy,
+}) => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -28,7 +34,12 @@ const Post: React.FC<PostType> = ({ userId, imageUrl, content, likedBy }) => {
           <Image src={imageUrl} height={500} />
         </Card.Section>
         <Card.Section>
-          <PostFooter userId={userId} likedBy={likedBy} />
+          <PostFooter
+            id={id}
+            userId={userId}
+            likedBy={likedBy}
+            username={user.username}
+          />
           <Flex align={"center"} gap={"sm"} px={"sm"}>
             <Text style={{ fontWeight: "bold" }}>{user.username}</Text>
             <Text>{content}</Text>
