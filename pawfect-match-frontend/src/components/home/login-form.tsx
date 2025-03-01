@@ -18,6 +18,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = (values: { email: string; password: string }) => {
     console.log(form.errors);
     console.log(values);
+    navigate("/overview");
   };
 
   const goToSignUp = () => {
