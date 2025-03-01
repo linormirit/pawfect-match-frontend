@@ -8,11 +8,11 @@ const fetchPosts = (): Post[] => {
       userId: "1",
       content: "Hi my corgi Max is looking for a new loving home!",
       imageUrl: "../src/assets/corgi.jpg",
-      likedBy: ["2"],
+      likedBy: ["1"],
       lastUpdated: new Date(),
     },
     {
-      id: "1",
+      id: "2",
       breed: "corgi",
       userId: "1",
       content: "Hi my corgi Max is looking for a new loving home!",
@@ -21,7 +21,7 @@ const fetchPosts = (): Post[] => {
       lastUpdated: new Date(),
     },
     {
-      id: "1",
+      id: "3",
       breed: "corgi",
       userId: "1",
       content: "Hi my corgi Max is looking for a new loving home!",
@@ -30,7 +30,7 @@ const fetchPosts = (): Post[] => {
       lastUpdated: new Date(),
     },
     {
-      id: "1",
+      id: "4",
       breed: "corgi",
       userId: "1",
       content: "Hi my corgi Max is looking for a new loving home!",

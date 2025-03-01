@@ -17,6 +17,7 @@ const PostsList: React.FC = () => {
       {posts.map((post) => (
         <Post
           id={post.id}
+          key={post.id}
           userId={post.userId}
           content={post.content}
           breed={post.breed}

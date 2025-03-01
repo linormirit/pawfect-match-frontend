@@ -10,7 +10,7 @@ const PostFooter: React.FC<Pick<Post, "userId" | "likedBy">> = ({
   userId,
   likedBy,
 }) => {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<boolean>();
 
   const handlePawClick = () => {
     setIsLiked((isLiked) => !isLiked);
@@ -26,17 +26,17 @@ const PostFooter: React.FC<Pick<Post, "userId" | "likedBy">> = ({
       <Flex>
         <ThemeIcon variant={"white"} size={60}>
           {isLiked ? (
-            <IconPaw
+            <IconPawFilled
               stroke={1.5}
-              color={pawGray}
+              color={pawGreen}
               cursor={"pointer"}
               onClick={handlePawClick}
               style={{ height: "70%", width: "70%" }}
             />
           ) : (
-            <IconPawFilled
+            <IconPaw
               stroke={1.5}
-              color={pawGreen}
+              color={pawGray}
               cursor={"pointer"}
               onClick={handlePawClick}
               style={{ height: "70%", width: "70%" }}
