@@ -1,4 +1,4 @@
-import { Card, Image } from "@mantine/core";
+import { Card, Image, Text } from "@mantine/core";
 
 import { PostHeader } from "./post-header";
 import { PostFooter } from "./post-footer";
@@ -19,8 +19,11 @@ const Post: React.FC<PostType> = ({ userId, imageUrl, content }) => {
       <Card.Section>
         <Image src={imageUrl} height={500} />
       </Card.Section>
-      <Card.Section withBorder>
-        <PostFooter content={content}/>
+      <Card.Section mt={"sm"}>
+        <Text px={"md"}>{content}</Text>
+      </Card.Section>
+      <Card.Section>
+        <PostFooter />
       </Card.Section>
     </Card>
   );

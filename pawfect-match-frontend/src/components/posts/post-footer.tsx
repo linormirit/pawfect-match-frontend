@@ -1,19 +1,18 @@
+import { Flex } from "@mantine/core";
 import { ThemeIcon } from "@mantine/core";
-import { Group, Stack, Text } from "@mantine/core";
 import { IconPawFilled } from "@tabler/icons-react";
 
-import { Post } from "../../types/post";
-
-const PostFooter: React.FC<Pick<Post, "content">> = ({ content }) => {
+const PostFooter: React.FC = () => {
   return (
-    <Stack>
-      <Text>{content}</Text>
-      <Group h={100}>
-        <ThemeIcon variant="white" size={80} color={"dark"}>
-          <IconPawFilled style={{ height: "70%", width: "70%" }} stroke={1.5} />
-        </ThemeIcon>
-      </Group>
-    </Stack>
+    <Flex>
+      <ThemeIcon variant="white" size={64} color={"dark"}>
+        <IconPawFilled
+          style={{ height: "70%", width: "70%" }}
+          stroke={1.5}
+          cursor={"pointer"}
+        />
+      </ThemeIcon>
+    </Flex>
   );
 };
 
