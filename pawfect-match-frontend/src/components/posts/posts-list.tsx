@@ -1,4 +1,4 @@
-import { Center } from "@mantine/core";
+import { Stack } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
@@ -8,7 +8,7 @@ const PostsList: React.FC = () => {
   const posts: PostType[] = fetchPosts();
 
   return (
-    <Center>
+    <Stack justify={"center"} align={"center"}>
       {posts.map((post) => (
         <Post
           id={post.id}
@@ -19,7 +19,7 @@ const PostsList: React.FC = () => {
           lastUpdated={post.lastUpdated}
         />
       ))}
-    </Center>
+    </Stack>
   );
 };
 
