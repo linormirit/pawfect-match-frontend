@@ -8,6 +8,8 @@ const invalidPasswordText =
 const passwordNotConfirmdText = "Password was not confirmed";
 const chooseAvatarText = "Choose your avatar";
 const commentPlaceholderText = "add a comment";
+const newFeatureText = "Would you like to find the perfect pet for you?";
+const newFeatureSubText = "Try out our new feature!";
 
 export {
   homePageTitle,
@@ -18,5 +20,7 @@ export {
   invalidPasswordText,
   passwordNotConfirmdText,
   chooseAvatarText,
-  commentPlaceholderText
+  commentPlaceholderText,
+  newFeatureText,
+  newFeatureSubText,
 };
