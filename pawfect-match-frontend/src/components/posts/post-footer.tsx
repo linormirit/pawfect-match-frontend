@@ -26,7 +26,7 @@ const PostFooter: React.FC<
   return (
     <Stack justify={"center"}>
       <Flex>
-        <ThemeIcon variant={"white"} size={60}>
+        <ThemeIcon variant={"transparent"} size={60}>
           {isLiked ? (
             <IconPawFilled
               stroke={1.5}
@@ -45,7 +45,7 @@ const PostFooter: React.FC<
             />
           )}
         </ThemeIcon>
-        <ThemeIcon variant={"white"} size={60}>
+        <ThemeIcon variant={"transparent"} size={60}>
           <IconMessageCircle
             stroke={1.5}
             cursor={"pointer"}
@@ -53,12 +53,12 @@ const PostFooter: React.FC<
             style={{ height: "70%", width: "70%" }}
           />
         </ThemeIcon>
-        <Modal opened={commentsOpened} onClose={close}>
+        <Modal opened={commentsOpened} onClose={close} size={500}>
           <Comments postId={id} username={username} />
         </Modal>
       </Flex>
       <Flex align={"center"}>
-        <ThemeIcon variant={"white"} size={40}>
+        <ThemeIcon variant={"transparent"} size={40}>
           <IconPawFilled
             stroke={1.5}
             color={pawGray}
