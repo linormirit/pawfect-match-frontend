@@ -27,11 +27,9 @@ const Post: React.FC<PostType> = ({ userId, imageUrl, content, likedBy }) => {
         <Card.Section>
           <Image src={imageUrl} height={500} />
         </Card.Section>
-        <Card.Section mt={"sm"}>
-          <Text px={"md"}>{content}</Text>
-        </Card.Section>
         <Card.Section>
           <PostFooter userId={userId} likedBy={likedBy} />
+          <Text p={"md"}>{content}</Text>
         </Card.Section>
       </Card>
     )
