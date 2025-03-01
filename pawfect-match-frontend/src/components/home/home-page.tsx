@@ -2,8 +2,8 @@ import { Flex, Image, Stack, Text } from "@mantine/core";
 
 import { HomeTitle } from "./home-title";
 import { pawGreen } from "../../consts";
-import { homePageSubText, homePageText } from "../../strings";
 import { LoginForm } from "./login-form";
+import { homePageSubText, homePageText } from "../../strings";
 
 const HomePage: React.FC = () => {
   return (
