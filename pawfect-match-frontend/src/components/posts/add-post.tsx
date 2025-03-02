@@ -8,11 +8,21 @@ import {
   Avatar,
   Textarea,
   FileInput,
+  Autocomplete,
 } from "@mantine/core";
+import {
+  newPostText,
+  postButtonText,
+  addPostPlaceholder,
+  breedAutocompleteLabel,
+  autoCompletePlaceholder,
+} from "../../strings";
+import { useState } from "react";
 import { useForm } from "@mantine/form";
-import { addPostPlaceholder } from "../../strings";
 
 const AddPost: React.FC = () => {
+  const [postImage, setPostImage] = useState<File>();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -31,20 +41,39 @@ const AddPost: React.FC = () => {
         mt={"xl"}
         withBorder
       >
-        <Stack gap={'sm'}>
-        <Button variant={"transparent"} ml={'80%'} size={'xl'}>Post</Button>
-        <Flex justify={'center'}><Title>New Post</Title></Flex>
-          <Flex align={"center"} justify={"space-evenly"}>
+        <Stack gap={"lg"}>
+          <Flex align={"center"} justify={"space-between"} ml={"40%"}>
+            <Title>{newPostText}</Title>
+            <Button variant={"transparent"} size={"xl"} p={0}>
+              {postButtonText}
+            </Button>
+          </Flex>
+          <Flex align={"center"} gap={'sm'}>
             <Flex gap={"sm"}>
               <Avatar radius={"xl"} size={60} src={""} />
               <Textarea
+                w={400}
                 key={form.key("content")}
                 {...form.getInputProps("content")}
                 placeholder={addPostPlaceholder}
               />
             </Flex>
-            <FileInput />
+            <FileInput
+              placeholder={"Add post"}
+              value={postImage}
+              onChange={(file) => {
+                if (file) {
+                  setPostImage(file);
+                }
+              }}
+            />
           </Flex>
+          <Autocomplete
+            w={300}
+            label={breedAutocompleteLabel}
+            placeholder={autoCompletePlaceholder}
+            data={["Corgi", "Husky"]}
+          />
         </Stack>
       </Card>
     </Center>

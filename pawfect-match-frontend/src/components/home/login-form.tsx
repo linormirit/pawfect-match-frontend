@@ -31,14 +31,14 @@ const LoginForm: React.FC = () => {
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Stack>
           <TextInput
-            label="Email"
-            placeholder="your@email.com"
+            label={"Email"}
+            placeholder={"your@email.com"}
             key={form.key("email")}
             {...form.getInputProps("email")}
           />
           <TextInput
-            label="Password"
-            placeholder="password"
+            label={"Password"}
+            placeholder={"password"}
             key={form.key("password")}
             {...form.getInputProps("password")}
           />

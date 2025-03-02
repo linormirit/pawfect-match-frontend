@@ -10,7 +10,11 @@ const chooseAvatarText = "Choose your avatar";
 const commentPlaceholderText = "add a comment";
 const newFeatureText = "Would you like to find the perfect pet for you?";
 const newFeatureSubText = "Try out our new feature!";
-const addPostPlaceholder = 'What would you like to post?';
+const addPostPlaceholder = "What would you like to post?";
+const newPostText = "New Post";
+const postButtonText = "Post";
+const breedAutocompleteLabel = "Dog breed";
+const autoCompletePlaceholder = "Pick value or enter anything";
 
 export {
   homePageTitle,
@@ -25,4 +29,8 @@ export {
   newFeatureText,
   newFeatureSubText,
   addPostPlaceholder,
+  newPostText,
+  postButtonText,
+  breedAutocompleteLabel,
+  autoCompletePlaceholder
 };

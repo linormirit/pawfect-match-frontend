@@ -57,30 +57,30 @@ const SignUpForm: React.FC = () => {
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <Stack>
             <TextInput
-              label="Email"
-              placeholder="your@email.com"
+              label={"Email"}
+              placeholder={"your@email.com"}
               key={form.key("email")}
               {...form.getInputProps("email")}
               error={form.errors.email}
             />
             <TextInput
-              label="Username"
-              placeholder="user_name"
+              label={"Username"}
+              placeholder={"user_name"}
               key={form.key("username")}
               {...form.getInputProps("username")}
               error={form.errors.username}
             />
             <FileInput label="Avatar" placeholder={chooseAvatarText} />
             <TextInput
-              label="Password"
-              placeholder="password"
+              label={"Password"}
+              placeholder={"password"}
               key={form.key("password")}
               {...form.getInputProps("password")}
               error={form.errors.password}
             />
             <TextInput
-              label="Confirm password"
-              placeholder="confirm password"
+              label={"Confirm password"}
+              placeholder={"confirm password"}
               key={form.key("confirmPassword")}
               {...form.getInputProps("confirmPassword")}
               error={createConfirmPasswordError()}
