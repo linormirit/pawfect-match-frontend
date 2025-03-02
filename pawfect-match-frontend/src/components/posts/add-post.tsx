@@ -38,6 +38,7 @@ const AddPost: React.FC = () => {
         padding={"lg"}
         radius={"md"}
         w={"60%"}
+        h={400}
         mt={"xl"}
         withBorder
       >
@@ -48,7 +49,7 @@ const AddPost: React.FC = () => {
               {postButtonText}
             </Button>
           </Flex>
-          <Flex align={"center"} gap={'sm'}>
+          <Flex align={"center"} gap={"sm"}>
             <Flex gap={"sm"}>
               <Avatar radius={"xl"} size={60} src={""} />
               <Textarea
