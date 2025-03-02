@@ -4,6 +4,7 @@ import { Logo } from "../home/logo";
 import { menuColor } from "../../consts";
 import { PostsList } from "../posts/posts-list";
 import { IconCameraHeart, IconSquareRoundedPlus } from "@tabler/icons-react";
+import { AddPost } from "../posts/add-post";
 
 const Overview: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const Overview: React.FC = () => {
       orientation={"vertical"}
       defaultValue={"overview"}
     >
-      <Stack gap={"lg"} mt={'md'}>
+      <Stack gap={"lg"} mt={"md"}>
         <Logo fontSize={50} imageSize={70} />
         <Tabs.List p={"sm"}>
           <Tabs.Tab
@@ -26,7 +27,7 @@ const Overview: React.FC = () => {
             value={"profile"}
             leftSection={<Avatar radius={"xl"} size={40} src={""} />}
           >
-            <Text style={{ fontWeight: "bold" }}>Loged user</Text>
+            <Text style={{ fontWeight: "bold" }}>Logged user</Text>
           </Tabs.Tab>
           <Tabs.Tab
             value={"addPost"}
@@ -41,7 +42,9 @@ const Overview: React.FC = () => {
         <PostsList />
       </Tabs.Panel>
       <Tabs.Panel value={"profile"}>Messages tab content</Tabs.Panel>
-      <Tabs.Panel value={"addPost"}>Settings tab content</Tabs.Panel>
+      <Tabs.Panel value={"addPost"}>
+        <AddPost />
+      </Tabs.Panel>
     </Tabs>
   );
 };
