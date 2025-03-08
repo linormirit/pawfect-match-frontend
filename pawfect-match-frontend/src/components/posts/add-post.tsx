@@ -1,7 +1,9 @@
 import {
   Card,
   Flex,
+  Text,
   Stack,
+  Image,
   Title,
   Center,
   Button,
@@ -10,6 +12,10 @@ import {
   FileInput,
   Autocomplete,
 } from "@mantine/core";
+import { isNil } from "lodash";
+import { useMemo, useState } from "react";
+import { useForm } from "@mantine/form";
+
 import {
   newPostText,
   postButtonText,
@@ -17,11 +23,15 @@ import {
   breedAutocompleteLabel,
   autoCompletePlaceholder,
 } from "../../strings";
-import { useState } from "react";
-import { useForm } from "@mantine/form";
 
 const AddPost: React.FC = () => {
   const [postImage, setPostImage] = useState<File>();
+
+  const imageUrl = useMemo(() => {
+    if (postImage) {
+      return URL.createObjectURL(postImage);
+    }
+  }, [postImage]);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -31,6 +41,11 @@ const AddPost: React.FC = () => {
       breed: "",
     },
   });
+
+  const handeImageReset = () => {
+    setPostImage(undefined);
+  };
+
   return (
     <Center>
       <Card
@@ -38,7 +53,7 @@ const AddPost: React.FC = () => {
         padding={"lg"}
         radius={"md"}
         w={"60%"}
-        h={400}
+        h={320}
         mt={"xl"}
         withBorder
       >
@@ -49,8 +64,8 @@ const AddPost: React.FC = () => {
               {postButtonText}
             </Button>
           </Flex>
-          <Flex align={"center"} gap={"sm"}>
-            <Flex gap={"sm"}>
+          <Flex align={'flex-start'} justify={"space-between"} mt={'sm'} h={100}>
+            <Flex align={"center"} gap={"xs"}>
               <Avatar radius={"xl"} size={60} src={""} />
               <Textarea
                 w={400}
@@ -58,16 +73,24 @@ const AddPost: React.FC = () => {
                 {...form.getInputProps("content")}
                 placeholder={addPostPlaceholder}
               />
+              {isNil(imageUrl) ? (
+                <FileInput
+                  placeholder={"Select Photo"}
+                  value={postImage}
+                  accept={"image/*"}
+                  onChange={(file) => {
+                    if (file) {
+                      setPostImage(file);
+                    }
+                  }}
+                />
+              ) : (
+                <Button variant={"outline"} p={"xs"} onClick={handeImageReset}>
+                  <Text size={"sm"}>Remove Photo</Text>
+                </Button>
+              )}
             </Flex>
-            <FileInput
-              placeholder={"Add post"}
-              value={postImage}
-              onChange={(file) => {
-                if (file) {
-                  setPostImage(file);
-                }
-              }}
-            />
+            <Image src={imageUrl} radius={"sm"} maw={200} />
           </Flex>
           <Autocomplete
             w={300}

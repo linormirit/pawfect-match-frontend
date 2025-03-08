@@ -4,9 +4,9 @@ import { Modal, ThemeIcon } from "@mantine/core";
 import { Flex, Stack, Text } from "@mantine/core";
 import { IconPaw, IconPawFilled, IconMessageCircle } from "@tabler/icons-react";
 
+import { Comments } from "./comments";
 import { Post } from "../../types/post";
 import { pawGray, pawGreen } from "../../consts";
-import { Comments } from "./comments";
 
 const PostFooter: React.FC<
   Pick<Post, "id" | "userId" | "likedBy"> & { username: string }

@@ -1,5 +1,5 @@
-import { Flex, Stack, Title, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { Flex, Stack, Title, Text } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
@@ -25,7 +25,7 @@ const PostsList: React.FC = () => {
             breed={post.breed}
             imageUrl={post.imageUrl}
             likedBy={post.likedBy}
-            lastUpdated={post.lastUpdated}
+            timestamp={post.timestamp}
           />
         ))}
       </Stack>
