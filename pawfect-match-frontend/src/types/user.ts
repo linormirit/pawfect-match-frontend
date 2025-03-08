@@ -4,7 +4,7 @@ interface User {
   password: string;
   username: string;
   avatarUrl: string;
-  lastUpdate: Date;
+  timestamp: Date;
 }
 
 export type { User };

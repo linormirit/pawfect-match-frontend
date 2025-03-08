@@ -3,12 +3,12 @@ import { Title } from "@mantine/core";
 import { pawGreen } from "../../consts";
 import { homePageTitle } from "../../strings";
 
-const HomeTitle: React.FC = () => {
+const HomeTitle: React.FC<{ fontSize: number }> = ({ fontSize }) => {
   return (
     <Title
       style={{
         color: "#ffffff",
-        fontSize: "100px",
+        fontSize: `${fontSize}px`,
         fontWeight: "bold",
         padding: "10px 20px",
         display: "inline-block",

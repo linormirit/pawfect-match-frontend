@@ -1,6 +1,6 @@
-import { Flex, Image, Stack, Text } from "@mantine/core";
+import { Flex, Stack, Text } from "@mantine/core";
 
-import { HomeTitle } from "./home-title";
+import { Logo } from "./logo";
 import { pawGreen } from "../../consts";
 import { LoginForm } from "./login-form";
 import { homePageSubText, homePageText } from "../../strings";
@@ -12,18 +12,11 @@ const HomePage: React.FC = () => {
         <LoginForm />
       </Flex>
       <Stack h={"100%"}>
-        <Flex gap={"sm"} align={"center"}>
-          <HomeTitle />
-          <Image
-            h={120}
-            src={"/home-paw.png"}
-            style={{ transform: "rotate(15deg)" }}
-          ></Image>
-        </Flex>
-        <Text style={{ color: pawGreen, fontSize: "30px" }}>
+        <Logo fontSize={100} imageSize={120} />
+        <Text size={"30px"} style={{ color: pawGreen }}>
           {homePageText}
         </Text>
-        <Text style={{ color: pawGreen, fontSize: "30px" }}>
+        <Text size={"30px"} style={{ color: pawGreen }}>
           {homePageSubText}
         </Text>
       </Stack>

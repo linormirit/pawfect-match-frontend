@@ -7,7 +7,7 @@ const getUserById = (userId: string): User => {
     avatarUrl: "url",
     email: "user@gamil.com",
     password: "",
-    lastUpdate: new Date(),
+    timestamp: new Date(),
   };
 
   return user;
@@ -20,7 +20,7 @@ const getUserByEmail = (email: string): User => {
     avatarUrl: "url",
     email: email,
     password: "",
-    lastUpdate: new Date(),
+    timestamp: new Date(),
   };
 
   return user;

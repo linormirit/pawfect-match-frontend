@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, Group, Stack, TextInput } from "@mantine/core";
 
 import { pawGreen } from "../../consts";
+import { loginText, signUpText } from "../../strings";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
@@ -30,23 +31,23 @@ const LoginForm: React.FC = () => {
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Stack>
           <TextInput
-            label="Email"
-            placeholder="your@email.com"
+            label={"Email"}
+            placeholder={"your@email.com"}
             key={form.key("email")}
             {...form.getInputProps("email")}
           />
           <TextInput
-            label="Password"
-            placeholder="password"
+            label={"Password"}
+            placeholder={"password"}
             key={form.key("password")}
             {...form.getInputProps("password")}
           />
-          <Button type="submit">Log In</Button>
+          <Button type="submit">{loginText}</Button>
 
           <Card.Section withBorder inheritPadding>
             <Group justify="center" mt={"sm"} mb={"sm"}>
               <Button type="button" color={pawGreen} onClick={goToSignUp}>
-                Sign Up
+                {signUpText}
               </Button>
             </Group>
           </Card.Section>
