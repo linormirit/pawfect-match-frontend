@@ -17,7 +17,7 @@ const Post: React.FC<PostType> = ({
   content,
   likeBy,
 }) => {
-  const { token } = useUser();
+  const { token, loggedUser } = useUser();
   const { data: postUser } = useQuery<User, Error>({
     queryKey: ["fetchPostUserById"],
     queryFn: () => fetchUserById(userId, token),
@@ -25,7 +25,8 @@ const Post: React.FC<PostType> = ({
   });
 
   return (
-    !isNil(postUser) && (
+    !isNil(postUser) &&
+    !isNil(loggedUser) && (
       <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>
         <Card.Section>
           <PostHeader
@@ -39,12 +40,11 @@ const Post: React.FC<PostType> = ({
         <Card.Section>
           <PostFooter
             _id={_id}
-            userId={userId}
             likeBy={likeBy}
-            username={loggedUser.username}
+            loggedUserId={loggedUser?._id}
           />
           <Flex align={"center"} gap={"sm"} px={"sm"}>
-            <Text style={{ fontWeight: "bold" }}>{loggedUser.username}</Text>
+            <Text style={{ fontWeight: "bold" }}>{postUser?.username}</Text>
             <Text>{content}</Text>
           </Flex>
         </Card.Section>

@@ -9,9 +9,9 @@ import { Post } from "../../types/post";
 import { pawGray, pawGreen } from "../../consts";
 
 const PostFooter: React.FC<
-  Pick<Post, "_id" | "userId" | "likeBy"> & { username: string }
-> = ({ _id, userId, likeBy, username }) => {
-  const [isLiked, setIsLiked] = useState<boolean>(likeBy?.includes(userId));
+  Pick<Post, "_id" | "likeBy"> & { loggedUserId: string }
+> = ({ _id, likeBy, loggedUserId}) => {
+  const [isLiked, setIsLiked] = useState<boolean>(likeBy?.includes(loggedUserId));
   const [commentsOpened, { open, close }] = useDisclosure(false);
 
   const handlePawClick = () => {
@@ -49,7 +49,7 @@ const PostFooter: React.FC<
           />
         </ThemeIcon>
         <Modal opened={commentsOpened} onClose={close} size={500}>
-          <Comments postId={_id} username={username} />
+          <Comments postId={_id} />
         </Modal>
       </Flex>
       <Flex align={"center"}>

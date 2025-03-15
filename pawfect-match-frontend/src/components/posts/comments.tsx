@@ -6,10 +6,7 @@ import { Comment } from "../posts/comment";
 import { commentPlaceholderText } from "../../strings";
 import { Comment as CommentType } from "../../types/comment";
 
-const Comments: React.FC<{ postId: string; username: string }> = ({
-  // postId,
-  username,
-}) => {
+const Comments: React.FC<{ postId: string;}> = () => {
   const comments: CommentType[] = [];
   const [commentText, setCommentText] = useState("");
 
@@ -23,7 +20,7 @@ const Comments: React.FC<{ postId: string; username: string }> = ({
         <Comment
           key={comment.id}
           content={comment.content}
-          username={username}
+          username={'username'}
         />
       ))}
       <TextInput
