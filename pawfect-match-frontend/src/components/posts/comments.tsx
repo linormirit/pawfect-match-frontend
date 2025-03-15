@@ -14,13 +14,17 @@ const Comments: React.FC<{ postId: string; username: string }> = ({
   const [commentText, setCommentText] = useState("");
 
   const handleComment = () => {
-    setCommentText('');
+    setCommentText("");
   };
 
   return (
     <Stack justify={"center"}>
       {comments.map((comment) => (
-        <Comment content={comment.content} username={username} />
+        <Comment
+          key={comment.id}
+          content={comment.content}
+          username={username}
+        />
       ))}
       <TextInput
         value={commentText}

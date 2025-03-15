@@ -1,21 +1,20 @@
-import { isNil } from "lodash";
 import { Card, Flex, Image, Text } from "@mantine/core";
+import { isNil } from "lodash";
 
-import { PostHeader } from "./post-header";
-import { PostFooter } from "./post-footer";
-import { Post as PostType } from "../../types/post";
+import { serverBaseUrl } from "../../consts";
 import { useUser } from "../../contexts/user-context";
+import { Post as PostType } from "../../types/post";
+import { PostFooter } from "./post-footer";
+import { PostHeader } from "./post-header";
 
 const Post: React.FC<PostType> = ({
-  id,
+  _id,
   userId,
-  imageUrl,
+  imageURL,
   content,
   likedBy,
 }) => {
   const { loggedUser } = useUser();
-
-  console.log(loggedUser);
 
   return (
     !isNil(loggedUser) && (
@@ -27,11 +26,11 @@ const Post: React.FC<PostType> = ({
           ></PostHeader>
         </Card.Section>
         <Card.Section>
-          <Image src={imageUrl} height={500} />
+          <Image src={`${serverBaseUrl}/${imageURL}`} height={500} />
         </Card.Section>
         <Card.Section>
           <PostFooter
-            id={id}
+            _id={_id}
             userId={userId}
             likedBy={likedBy}
             username={loggedUser.username}
@@ -47,3 +46,4 @@ const Post: React.FC<PostType> = ({
 };
 
 export { Post };
+

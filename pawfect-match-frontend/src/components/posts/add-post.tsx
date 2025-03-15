@@ -51,7 +51,7 @@ const AddPost: React.FC = () => {
   } = useMutation<
     Post,
     Error,
-    { token: string; post: Pick<Post, "content" | "breed" | "imageUrl"> }
+    { token: string; post: Pick<Post, "content" | "breed" | "imageURL"> }
   >({
     mutationFn: createPost,
   });
@@ -68,7 +68,7 @@ const AddPost: React.FC = () => {
           post: {
             content: form.getValues().content,
             breed: form.getValues().breed,
-            imageUrl: url,
+            imageURL: url,
           },
         });
       },

@@ -27,7 +27,7 @@ const createPost = async ({
   post,
 }: {
   token: string;
-  post: Pick<Post, "content" | "breed" | "imageUrl">;
+  post: Pick<Post, "content" | "breed" | "imageURL">;
 }): Promise<Post> => {
   const response = await fetch(postApi.createPost, {
     method: "POST",

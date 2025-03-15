@@ -40,7 +40,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     enabled: !isEmpty(userId) && !isEmpty(token),
   });
 
-  const loggedUser = useMemo(() => userData ?? null, [userData]);
+  const loggedUser = useMemo(() => {
+    const user = JSON.parse(localStorage.getItem("user") ?? "");
+
+    if (!isEmpty(user)) {
+      return user;
+    } else {
+      return userData ?? null;
+    }
+  }, [userData]);
 
   const loading = useMemo(
     () => tokenLoading || userLoading,
@@ -68,6 +76,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setEmail("");
     setPassword("");
     navigate("/");
+    localStorage.removeItem("user");
   };
 
   useEffect(() => {
@@ -75,6 +84,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       mutateToken({ email, password });
     }
   }, [mutateToken, email, password]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem("user", JSON.stringify(loggedUser));
+    }
+  }, [loggedUser, isSuccess]);
 
   return (
     <UserContext.Provider

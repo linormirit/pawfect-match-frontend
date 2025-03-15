@@ -17,18 +17,20 @@ const PostsList: React.FC = () => {
     enabled: !isNil(token),
   });
 
+  console.log(posts);
+
   return (
     !isNil(posts) && (
       <Flex mt={"xl"}>
         <Stack justify={"center"} align={"center"} mx={"10%"}>
           {posts.map((post) => (
             <Post
-              id={post.id}
-              key={post.id}
+              _id={post._id}
+              key={post._id}
               userId={post.userId}
               content={post.content}
               breed={post.breed}
-              imageUrl={post.imageUrl}
+              imageURL={post.imageURL}
               likedBy={post.likedBy}
               timestamp={post.timestamp}
             />

@@ -1,9 +1,9 @@
 interface Post {
-    id: string;
+    _id: string;
     userId: string;
     breed: string;
     content: string;
-    imageUrl: string;
+    imageURL: string;
     likedBy: string[];
     timestamp: Date;
 }
