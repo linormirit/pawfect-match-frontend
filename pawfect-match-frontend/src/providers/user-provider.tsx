@@ -37,7 +37,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   } = useQuery<User, Error>({
     queryKey: ["fetchUserById"],
     queryFn: () => fetchUserById(userId, token),
-    enabled: !isEmpty(userId) && !isEmpty(token)
+    enabled: !isEmpty(userId) && !isEmpty(token),
   });
 
   const loggedUser = useMemo(() => userData ?? null, [userData]);

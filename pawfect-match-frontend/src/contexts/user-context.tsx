@@ -4,11 +4,11 @@ import { createContext, useContext } from "react";
 import { User } from "../types/user";
 
 interface UserContextType {
-  token: string | null;
+  token: string;
   loggedUser: User | null;
   loading: boolean;
   isSuccess: boolean;
-  error: string | null;
+  error: string;
   login: (email: string, password: string) => void;
   logout: () => void;
 }
