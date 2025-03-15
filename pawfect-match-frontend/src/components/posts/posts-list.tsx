@@ -1,22 +1,11 @@
 import { isNil } from "lodash";
-import { useQuery } from "@tanstack/react-query";
 import { Flex, Stack, Title, Text } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
 import { newFeatureSubText, newFeatureText } from "../../strings";
-import { fetchPosts } from "../../services/post-service";
-import { useUser } from "../../contexts/user-context";
 
-const PostsList: React.FC = () => {
-  const { token } = useUser();
-
-  const { data: posts } = useQuery<PostType[], Error>({
-    queryKey: ["fetchPosts"],
-    queryFn: () => fetchPosts(token),
-    enabled: !isNil(token),
-  });
-
+const PostsList: React.FC<{ posts: PostType[] | undefined }> = ({ posts }) => {
   return (
     !isNil(posts) && (
       <Flex mt={"xl"}>

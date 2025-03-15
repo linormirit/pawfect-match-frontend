@@ -13,11 +13,11 @@ import {
   Autocomplete,
   Loader,
 } from "@mantine/core";
+import { useMutation, QueryObserverResult } from "@tanstack/react-query";
 import { flatMap, isNil } from "lodash";
 import { useForm } from "@mantine/form";
 import { useMemo, useState } from "react";
 import { useFetch } from "@mantine/hooks";
-import { useMutation } from "@tanstack/react-query";
 
 import {
   newPostText,
@@ -28,12 +28,15 @@ import {
 } from "../../strings";
 import { Post } from "../../types/post";
 import { BreedList } from "../../types/dog";
+import { dogApi } from "../../services/dog-service";
 import { useUser } from "../../contexts/user-context";
 import { uploadFile } from "../../services/file-service";
 import { createPost } from "../../services/post-service";
-import { dogApi } from "../../services/dog-service";
 
-const AddPost: React.FC = () => {
+const AddPost: React.FC<{
+  setActiveTab: React.Dispatch<React.SetStateAction<string | null>>;
+  refetchPosts: () => Promise<QueryObserverResult<Post[], Error>>;
+}> = ({ setActiveTab, refetchPosts }) => {
   const [postImage, setPostImage] = useState<File | null>(null);
   const { token } = useUser();
 
@@ -54,6 +57,9 @@ const AddPost: React.FC = () => {
     { token: string; post: Pick<Post, "content" | "breed" | "imageURL"> }
   >({
     mutationFn: createPost,
+    onSuccess: () => {
+      refetchPosts();
+    },
   });
 
   const {
@@ -110,17 +116,18 @@ const AddPost: React.FC = () => {
   const handlePostSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     mutateUploadFile({ token, file: postImage });
+    setActiveTab("overview");
   };
 
   return (
     <Center>
       <Card
         h={320}
-        w={"60%"}
-        mt={"xl"}
+        w={"100%"}
+        m={"xl"}
         shadow={"sm"}
         radius={"md"}
-        padding={"lg"}
+        padding={"xl"}
         withBorder
       >
         <Stack gap={"lg"}>

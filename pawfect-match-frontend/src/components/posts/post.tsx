@@ -26,7 +26,7 @@ const Post: React.FC<PostType> = ({
           ></PostHeader>
         </Card.Section>
         <Card.Section>
-          <Image src={`${serverBaseUrl}/${imageURL}`} height={500} />
+          <Image src={`${serverBaseUrl}${imageURL}`} height={500} />
         </Card.Section>
         <Card.Section>
           <PostFooter
