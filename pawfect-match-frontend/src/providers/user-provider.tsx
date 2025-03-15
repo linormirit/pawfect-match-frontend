@@ -87,8 +87,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [tokenData, userData, isSuccess]);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") ?? "");
-    const token = JSON.parse(localStorage.getItem("tokenData") ?? "");
+    const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+    const token = JSON.parse(localStorage.getItem("tokenData") ?? "{}");
 
     if (!isEmpty(user)) {
       setLoggedUser(user);

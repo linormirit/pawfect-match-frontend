@@ -29,7 +29,7 @@ const PostsList: React.FC = () => {
               content={post.content}
               breed={post.breed}
               imageURL={post.imageURL}
-              likedBy={post.likedBy}
+              likeBy={post.likeBy}
               timestamp={post.timestamp}
             />
           ))}

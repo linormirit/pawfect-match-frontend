@@ -4,7 +4,7 @@ interface Post {
     breed: string;
     content: string;
     imageURL: string;
-    likedBy: string[];
+    likeBy: string[];
     timestamp: Date;
 }
 

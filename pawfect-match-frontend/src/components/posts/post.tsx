@@ -12,10 +12,10 @@ const Post: React.FC<PostType> = ({
   userId,
   imageURL,
   content,
-  likedBy,
+  likeBy,
 }) => {
   const { loggedUser } = useUser();
-  
+
   return (
     !isNil(loggedUser) && (
       <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>
@@ -32,7 +32,7 @@ const Post: React.FC<PostType> = ({
           <PostFooter
             _id={_id}
             userId={userId}
-            likedBy={likedBy}
+            likeBy={likeBy}
             username={loggedUser.username}
           />
           <Flex align={"center"} gap={"sm"} px={"sm"}>
