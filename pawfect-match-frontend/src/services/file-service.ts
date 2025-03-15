@@ -16,13 +16,15 @@ const uploadFile = async ({
     throw new Error("Missing file. Please select a file to upload.");
   }
 
+  const formData = new FormData();
+  formData.append("file", file);
+
   const response = await fetch(fileApi.uploadFile, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       authorization: token,
     },
-    body: file,
+    body: formData,
   });
 
   if (!response.ok) {

@@ -16,7 +16,8 @@ import {
 import { flatMap, isNil } from "lodash";
 import { useForm } from "@mantine/form";
 import { useMemo, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFetch } from "@mantine/hooks";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   newPostText,
@@ -30,7 +31,7 @@ import { BreedList } from "../../types/dog";
 import { useUser } from "../../contexts/user-context";
 import { uploadFile } from "../../services/file-service";
 import { createPost } from "../../services/post-service";
-import { fetchBreedsList } from "../../services/dog-service";
+import { dogApi } from "../../services/dog-service";
 
 const AddPost: React.FC = () => {
   const [postImage, setPostImage] = useState<File | null>(null);
@@ -39,12 +40,8 @@ const AddPost: React.FC = () => {
   const {
     data: breedList,
     error,
-    isLoading,
-  } = useQuery<BreedList, Error>({
-    queryKey: ["fetchUserById"],
-    queryFn: () => fetchBreedsList(),
-    enabled: false,
-  });
+    loading,
+  } = useFetch<BreedList>(dogApi.fetchBreedsList);
 
   const {
     // data: createdPost,
@@ -69,8 +66,8 @@ const AddPost: React.FC = () => {
         mutateCreatePost({
           token,
           post: {
-            content: form.values.content,
-            breed: form.values.breed,
+            content: form.getValues().content,
+            breed: form.getValues().breed,
             imageUrl: url,
           },
         });
@@ -79,7 +76,7 @@ const AddPost: React.FC = () => {
   );
 
   const breeds: string[] = useMemo(() => {
-    if (!isLoading) {
+    if (!loading) {
       if (!error) {
         return flatMap(breedList?.message, (subBreeds, breed) => {
           return subBreeds.map((subBreed) => `${subBreed} ${breed}`);
@@ -90,7 +87,7 @@ const AddPost: React.FC = () => {
     } else {
       return [];
     }
-  }, [breedList, isLoading, error]);
+  }, [breedList, loading, error]);
 
   const imageUrl = useMemo(() => {
     if (postImage) {
@@ -110,19 +107,20 @@ const AddPost: React.FC = () => {
     setPostImage(null);
   };
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     mutateUploadFile({ token, file: postImage });
   };
 
   return (
     <Center>
       <Card
-        shadow={"sm"}
-        padding={"lg"}
-        radius={"md"}
-        w={"60%"}
         h={320}
+        w={"60%"}
         mt={"xl"}
+        shadow={"sm"}
+        radius={"md"}
+        padding={"lg"}
         withBorder
       >
         <Stack gap={"lg"}>
@@ -134,10 +132,10 @@ const AddPost: React.FC = () => {
               </Button>
             </Flex>
             <Flex
+              h={100}
+              mt={"sm"}
               align={"flex-start"}
               justify={"space-between"}
-              mt={"sm"}
-              h={100}
             >
               <Flex align={"center"} gap={"xs"}>
                 <Avatar radius={"xl"} size={60} src={""} />
@@ -175,7 +173,7 @@ const AddPost: React.FC = () => {
               label={breedAutocompleteLabel}
               placeholder={autoCompletePlaceholder}
               data={breeds}
-              rightSection={isLoading ? <Loader size={"sm"} /> : null}
+              rightSection={loading ? <Loader size={"sm"} /> : null}
               {...form.getInputProps("breed")}
             />
           </form>

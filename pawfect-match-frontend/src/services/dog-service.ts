@@ -19,4 +19,4 @@ const fetchBreedsList = async (): Promise<BreedList> => {
   return response.json();
 };
 
-export { fetchBreedsList };
+export { dogApi, fetchBreedsList };
