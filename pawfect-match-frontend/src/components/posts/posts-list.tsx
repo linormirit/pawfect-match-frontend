@@ -17,8 +17,6 @@ const PostsList: React.FC = () => {
     enabled: !isNil(token),
   });
 
-  console.log(posts);
-
   return (
     !isNil(posts) && (
       <Flex mt={"xl"}>

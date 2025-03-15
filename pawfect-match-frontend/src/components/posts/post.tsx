@@ -15,7 +15,7 @@ const Post: React.FC<PostType> = ({
   likedBy,
 }) => {
   const { loggedUser } = useUser();
-
+  
   return (
     !isNil(loggedUser) && (
       <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>

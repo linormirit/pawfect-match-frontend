@@ -16,6 +16,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [loggedUser, setLoggedUser] = useState<User | null>(null);
+  const [token, setToken] = useState<TokenResponse | null>(null);
 
   const {
     data: tokenData,
@@ -26,7 +28,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     mutationFn: fetchToken,
   });
 
-  const token = useMemo(() => tokenData?.accessToken ?? "", [tokenData]);
   const userId = useMemo(() => tokenData?._id ?? "", [tokenData]);
 
   const {
@@ -36,19 +37,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     isLoading: userLoading,
   } = useQuery<User, Error>({
     queryKey: ["fetchUserById"],
-    queryFn: () => fetchUserById(userId, token),
-    enabled: !isEmpty(userId) && !isEmpty(token),
+    queryFn: () => fetchUserById(userId, token?.accessToken),
+    enabled: !isEmpty(userId) && !isEmpty(token?.accessToken),
   });
-
-  const loggedUser = useMemo(() => {
-    const user = JSON.parse(localStorage.getItem("user") ?? "");
-
-    if (!isEmpty(user)) {
-      return user;
-    } else {
-      return userData ?? null;
-    }
-  }, [userData]);
 
   const loading = useMemo(
     () => tokenLoading || userLoading,
@@ -85,22 +76,39 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }, [mutateToken, email, password]);
 
+  useEffect(() => setLoggedUser(userData ?? null), [userData]);
+  useEffect(() => setToken(tokenData ?? null), [tokenData]);
+
   useEffect(() => {
     if (isSuccess) {
-      localStorage.setItem("user", JSON.stringify(loggedUser));
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("tokenData", JSON.stringify(tokenData));
     }
-  }, [loggedUser, isSuccess]);
+  }, [tokenData, userData, isSuccess]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") ?? "");
+    const token = JSON.parse(localStorage.getItem("tokenData") ?? "");
+
+    if (!isEmpty(user)) {
+      setLoggedUser(user);
+    }
+
+    if (!isEmpty(token)) {
+      setToken(token);
+    }
+  }, []);
 
   return (
     <UserContext.Provider
       value={{
-        token,
         login,
         logout,
         loading,
         isSuccess,
         loggedUser,
         error: errorToDisplay,
+        token: token?.accessToken ?? "",
       }}
     >
       {children}

@@ -29,12 +29,12 @@ const fetchToken = async ({
   return response.json();
 };
 
-const fetchUserById = async (userId: string, token: string): Promise<User> => {
+const fetchUserById = async (userId: string, token: string | undefined): Promise<User> => {
   const response = await fetch(`${userApi.fetchUserById}/${userId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      authorization: token,
+      authorization: token ?? "",
     },
   });
 
