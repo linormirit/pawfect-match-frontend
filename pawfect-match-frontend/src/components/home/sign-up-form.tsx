@@ -20,6 +20,7 @@ import { User } from "../../types/user";
 import { useUser } from "../../contexts/user-context";
 import { register } from "../../services/user-service";
 import { uploadFile } from "../../services/file-service";
+import { TokenResponse } from "../../types/token-response";
 
 const SignUpForm: React.FC = () => {
   const [avatarImage, setAvaterImage] = useState<File | null>(null);
@@ -45,13 +46,15 @@ const SignUpForm: React.FC = () => {
   });
 
   const { mutate: mutateRegister } = useMutation<
-    User,
+    TokenResponse,
     Error,
     Pick<User, "email" | "username" | "password" | "avatarURL">
   >({
     mutationFn: register,
-    onSuccess: (user) => {
-      login(user.email, user.password);
+    onSuccess: () => {
+      if (login) {
+        login(form.getValues().email, form.getValues().password);
+      }
     },
   });
 

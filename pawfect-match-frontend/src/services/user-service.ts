@@ -59,7 +59,7 @@ const register = async ({
   username: string,
   password: string;
   avatarURL: string;
-}): Promise<User> => {
+}): Promise<TokenResponse> => {
   const response = await fetch(userApi.register, {
     method: "POST",
     headers: {
