@@ -6,10 +6,8 @@ const fileApi = {
 };
 
 const uploadFile = async ({
-  token,
   file,
 }: {
-  token: string;
   file: File | null;
 }): Promise<{ url: string }> => {
   if (isNil(file)) {
@@ -21,9 +19,6 @@ const uploadFile = async ({
 
   const response = await fetch(fileApi.uploadFile, {
     method: "POST",
-    headers: {
-      authorization: token,
-    },
     body: formData,
   });
 

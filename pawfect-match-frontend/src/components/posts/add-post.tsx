@@ -47,9 +47,6 @@ const AddPost: React.FC<{
   } = useFetch<BreedList>(dogApi.fetchBreedsList);
 
   const {
-    // data: createdPost,
-    // error: createPostError,
-    // isPending: createPostLoading,
     mutate: mutateCreatePost,
   } = useMutation<
     Post,
@@ -64,9 +61,8 @@ const AddPost: React.FC<{
   });
 
   const {
-    // data: file,
     mutate: mutateUploadFile,
-  } = useMutation<{ url: string }, Error, { token: string; file: File | null }>(
+  } = useMutation<{ url: string }, Error, { file: File | null }>(
     {
       mutationFn: uploadFile,
       onSuccess: ({ url }) => {
@@ -116,7 +112,7 @@ const AddPost: React.FC<{
 
   const handlePostSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    mutateUploadFile({ token, file: postImage });
+    mutateUploadFile({ file: postImage });
   };
 
   return (

@@ -5,6 +5,7 @@ import { TokenResponse } from "../types/token-response";
 const userApi = {
   fetchToken: `${serverBaseUrl}/auth/login`,
   fetchUserById: `${serverBaseUrl}/users`,
+  register: `${serverBaseUrl}/auth/register`,
 };
 
 const fetchToken = async ({
@@ -48,6 +49,30 @@ const fetchUserById = async (
   return response.json();
 };
 
-export default fetchToken;
+const register = async ({
+  email,
+  username,
+  password,
+  avatarURL,
+}: {
+  email: string;
+  username: string,
+  password: string;
+  avatarURL: string;
+}): Promise<User> => {
+  const response = await fetch(userApi.register, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, username, password, avatarURL }),
+  });
 
-export { fetchToken, fetchUserById };
+  if (!response.ok) {
+    throw new Error("Failed to register");
+  }
+
+  return response.json();
+};
+
+export { fetchToken, fetchUserById, register };

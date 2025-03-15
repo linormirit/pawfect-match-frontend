@@ -1,9 +1,9 @@
 interface User {
-  id: string;
+  _id: string;
   email: string;
   password: string;
   username: string;
-  avatarUrl: string;
+  avatarURL: string;
   timestamp: Date;
 }
 

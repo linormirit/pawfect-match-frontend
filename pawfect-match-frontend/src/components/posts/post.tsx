@@ -22,7 +22,7 @@ const Post: React.FC<PostType> = ({
         <Card.Section>
           <PostHeader
             username={loggedUser.username}
-            avatarUrl={loggedUser.avatarUrl}
+            avatarUrl={loggedUser.avatarURL}
           ></PostHeader>
         </Card.Section>
         <Card.Section>

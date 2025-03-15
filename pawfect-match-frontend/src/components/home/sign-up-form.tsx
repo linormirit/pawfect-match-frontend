@@ -6,7 +6,9 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useState } from "react";
 import { useForm } from "@mantine/form";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   signUpText,
@@ -14,8 +16,13 @@ import {
   invalidPasswordText,
   passwordNotConfirmdText,
 } from "../../strings";
+import { User } from "../../types/user";
+import { register } from "../../services/user-service";
+import { uploadFile } from "../../services/file-service";
 
 const SignUpForm: React.FC = () => {
+  const [avatarImage, setAvaterImage] = useState<File | null>(null);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -35,9 +42,33 @@ const SignUpForm: React.FC = () => {
     },
   });
 
-  const handleSubmit = (values: { email: string; password: string }) => {
-    console.log(form.errors);
-    console.log(values);
+  const { mutate: mutateRegister } = useMutation<
+    User,
+    Error,
+    Pick<User, "email" | "username" | "password" | "avatarURL">
+  >({
+    mutationFn: register,
+  });
+
+  const { mutate: mutateUploadFile } = useMutation<
+    { url: string },
+    Error,
+    { file: File | null }
+  >({
+    mutationFn: uploadFile,
+    onSuccess: ({ url }) => {
+      mutateRegister({
+        email: form.getValues().email,
+        username: form.getValues().username,
+        avatarURL: url,
+        password: form.getValues().password,
+      });
+    },
+  });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    mutateUploadFile({ file: avatarImage });
   };
 
   const createConfirmPasswordError = () => {
@@ -54,7 +85,7 @@ const SignUpForm: React.FC = () => {
     <Stack align={"center"} justify={"center"} mt={100}>
       <Title>{signUpText}</Title>
       <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
-        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+        <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput
               label={"Email"}
@@ -70,7 +101,15 @@ const SignUpForm: React.FC = () => {
               {...form.getInputProps("username")}
               error={form.errors.username}
             />
-            <FileInput label="Avatar" placeholder={chooseAvatarText} />
+            <FileInput
+              label={"Avatar"}
+              placeholder={chooseAvatarText}
+              onChange={(file) => {
+                if (file) {
+                  setAvaterImage(file);
+                }
+              }}
+            />
             <TextInput
               label={"Password"}
               placeholder={"password"}
