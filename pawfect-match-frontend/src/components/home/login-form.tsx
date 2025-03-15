@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
   Card,
@@ -8,7 +7,6 @@ import {
   Text,
   Loader,
 } from "@mantine/core";
-import { useEffect } from "react";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +16,7 @@ import { useUser } from "../../contexts/user-context";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login, error, loading, isSuccess, loggedUser } = useUser();
+  const { login, error, loading } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -41,12 +39,6 @@ const LoginForm: React.FC = () => {
   const goToSignUp = () => {
     navigate("/signup");
   };
-
-  useEffect(() => {
-    if (loggedUser && isSuccess) {  
-      navigate("/overview");
-    }
-  }, [loggedUser, isSuccess]);
 
   return (
     <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>

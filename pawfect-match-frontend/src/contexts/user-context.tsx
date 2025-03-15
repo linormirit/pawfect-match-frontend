@@ -7,7 +7,6 @@ interface UserContextType {
   token: string;
   loggedUser: User | null;
   loading: boolean;
-  isSuccess: boolean;
   error: string;
   login: (email: string, password: string) => void;
   logout: () => void;

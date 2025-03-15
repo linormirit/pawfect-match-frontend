@@ -6,8 +6,8 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
 import { useForm } from "@mantine/form";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
 import {
@@ -17,11 +17,13 @@ import {
   passwordNotConfirmdText,
 } from "../../strings";
 import { User } from "../../types/user";
+import { useUser } from "../../contexts/user-context";
 import { register } from "../../services/user-service";
 import { uploadFile } from "../../services/file-service";
 
 const SignUpForm: React.FC = () => {
   const [avatarImage, setAvaterImage] = useState<File | null>(null);
+  const { login } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -48,6 +50,9 @@ const SignUpForm: React.FC = () => {
     Pick<User, "email" | "username" | "password" | "avatarURL">
   >({
     mutationFn: register,
+    onSuccess: (user) => {
+      login(user.email, user.password);
+    },
   });
 
   const { mutate: mutateUploadFile } = useMutation<
@@ -68,16 +73,10 @@ const SignUpForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    mutateUploadFile({ file: avatarImage });
-  };
-
-  const createConfirmPasswordError = () => {
-    if (form.getValues().password) {
-      return form.getValues().confirmPassword === form.getValues().password
-        ? null
-        : passwordNotConfirmdText;
+    if (form.getValues().password !== form.getValues().confirmPassword) {
+      form.setErrors({ confirmPassword: passwordNotConfirmdText });
     } else {
-      return null;
+      mutateUploadFile({ file: avatarImage });
     }
   };
 
@@ -122,7 +121,6 @@ const SignUpForm: React.FC = () => {
               placeholder={"confirm password"}
               key={form.key("confirmPassword")}
               {...form.getInputProps("confirmPassword")}
-              error={createConfirmPasswordError()}
             />
             <Button type="submit">{signUpText}</Button>
           </Stack>

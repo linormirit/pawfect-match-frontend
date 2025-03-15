@@ -90,6 +90,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [tokenData, userData, isSuccess]);
 
   useEffect(() => {
+    if (loggedUser && isSuccess) {
+      navigate("/overview");
+    }
+  }, [navigate, loggedUser, isSuccess]);
+
+  useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user") ?? "{}");
     const token = JSON.parse(localStorage.getItem("tokenData") ?? "{}");
 
@@ -108,7 +114,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         login,
         logout,
         loading,
-        isSuccess,
         loggedUser,
         error: errorToDisplay,
         token: token?.accessToken ?? "",
