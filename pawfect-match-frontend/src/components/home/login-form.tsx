@@ -1,12 +1,22 @@
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Group, Stack, TextInput } from "@mantine/core";
+import {
+  Button,
+  Card,
+  Group,
+  Stack,
+  TextInput,
+  Text,
+  Loader,
+} from "@mantine/core";
 
 import { pawGreen } from "../../consts";
 import { loginText, signUpText } from "../../strings";
+import { useUser } from "../../contexts/user-context";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const { login, error, loading: isLoading } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -14,12 +24,16 @@ const LoginForm: React.FC = () => {
       email: "",
       password: "",
     },
+    validate: {
+      email: (value) => (value.trim() ? null : "Email is required"),
+      password: (value) => (value.trim() ? null : "Password is required"),
+    },
   });
 
   const handleSubmit = (values: { email: string; password: string }) => {
-    console.log(form.errors);
-    console.log(values);
-    navigate("/overview");
+    if (login) {
+      login(values.email, values.password);
+    }
   };
 
   const goToSignUp = () => {
@@ -29,7 +43,7 @@ const LoginForm: React.FC = () => {
   return (
     <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-        <Stack>
+        <Stack gap={12}>
           <TextInput
             label={"Email"}
             placeholder={"your@email.com"}
@@ -42,8 +56,12 @@ const LoginForm: React.FC = () => {
             key={form.key("password")}
             {...form.getInputProps("password")}
           />
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Text style={{ color: "red" }}>{error}</Text>
+          )}
           <Button type="submit">{loginText}</Button>
-
           <Card.Section withBorder inheritPadding>
             <Group justify="center" mt={"sm"} mb={"sm"}>
               <Button type="button" color={pawGreen} onClick={goToSignUp}>

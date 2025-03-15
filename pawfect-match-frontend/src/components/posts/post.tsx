@@ -1,12 +1,10 @@
 import { isNil } from "lodash";
-import { useEffect, useState } from "react";
 import { Card, Flex, Image, Text } from "@mantine/core";
 
-import { User } from "../../types/user";
 import { PostHeader } from "./post-header";
 import { PostFooter } from "./post-footer";
 import { Post as PostType } from "../../types/post";
-import { getUserById } from "../../services/user-service";
+import { useUser } from "../../contexts/user-context";
 
 const Post: React.FC<PostType> = ({
   id,
@@ -15,19 +13,15 @@ const Post: React.FC<PostType> = ({
   content,
   likedBy,
 }) => {
-  const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    setUser(getUserById(userId));
-  }, [userId]);
+  const { loggedUser } = useUser();
 
   return (
-    !isNil(user) && (
+    !isNil(loggedUser) && (
       <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>
         <Card.Section>
           <PostHeader
-            username={user.username}
-            avatarUrl={user.avatarUrl}
+            username={loggedUser.username}
+            avatarUrl={loggedUser.avatarUrl}
           ></PostHeader>
         </Card.Section>
         <Card.Section>
@@ -38,10 +32,10 @@ const Post: React.FC<PostType> = ({
             id={id}
             userId={userId}
             likedBy={likedBy}
-            username={user.username}
+            username={loggedUser.username}
           />
           <Flex align={"center"} gap={"sm"} px={"sm"}>
-            <Text style={{ fontWeight: "bold" }}>{user.username}</Text>
+            <Text style={{ fontWeight: "bold" }}>{loggedUser.username}</Text>
             <Text>{content}</Text>
           </Flex>
         </Card.Section>

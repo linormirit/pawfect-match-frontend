@@ -1,29 +1,50 @@
 import { User } from "../types/user";
+import { serverBaseUrl } from "../consts";
+import { TokenResponse } from "../types/token-response";
 
-const getUserById = (userId: string): User => {
-  const user: User = {
-    id: userId,
-    username: "dog_lover",
-    avatarUrl: "url",
-    email: "user@gamil.com",
-    password: "",
-    timestamp: new Date(),
-  };
-
-  return user;
+const userApi = {
+  fetchToken: `${serverBaseUrl}/auth/login`,
+  fetchUserById: `${serverBaseUrl}/users`,
 };
 
-const getUserByEmail = (email: string): User => {
-  const user: User = {
-    id: "1",
-    username: "dog_lover",
-    avatarUrl: "url",
-    email: email,
-    password: "",
-    timestamp: new Date(),
-  };
+const fetchToken = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<TokenResponse> => {
+  const response = await fetch(userApi.fetchToken, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-  return user;
+  if (!response.ok) {
+    throw new Error("Failed to fetch token");
+  }
+
+  return response.json();
 };
 
-export { getUserById, getUserByEmail };
+const fetchUserById = async (userId: string, token: string): Promise<User> => {
+  const response = await fetch(`${userApi.fetchUserById}/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user data");
+  }
+
+  return response.json();
+};
+
+export default fetchToken;
+
+export { fetchToken, fetchUserById };
