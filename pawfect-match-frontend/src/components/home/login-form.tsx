@@ -1,5 +1,4 @@
-import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Button,
   Card,
@@ -9,15 +8,17 @@ import {
   Text,
   Loader,
 } from "@mantine/core";
+import { useEffect } from "react";
+import { useForm } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
 
 import { pawGreen } from "../../consts";
 import { loginText, signUpText } from "../../strings";
 import { useUser } from "../../contexts/user-context";
-import { useEffect } from "react";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login, error, loading: isLoading, isSuccess } = useUser();
+  const { login, error, loading, isSuccess, loggedUser } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -42,10 +43,10 @@ const LoginForm: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (loggedUser && isSuccess) {  
       navigate("/overview");
     }
-  }, [form, isSuccess]);
+  }, [loggedUser, isSuccess]);
 
   return (
     <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>
@@ -63,7 +64,7 @@ const LoginForm: React.FC = () => {
             key={form.key("password")}
             {...form.getInputProps("password")}
           />
-          {isLoading ? (
+          {loading ? (
             <Loader />
           ) : (
             <Text style={{ color: "red" }}>{error}</Text>

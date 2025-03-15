@@ -67,6 +67,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setEmail("");
     setPassword("");
     navigate("/");
+    setLoggedUser(null);
+    setToken(null);
     localStorage.removeItem("user");
     localStorage.removeItem("tokenData");
   };

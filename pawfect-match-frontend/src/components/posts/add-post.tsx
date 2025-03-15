@@ -59,6 +59,7 @@ const AddPost: React.FC<{
     mutationFn: createPost,
     onSuccess: () => {
       refetchPosts();
+      setActiveTab("overview");
     },
   });
 
@@ -116,7 +117,6 @@ const AddPost: React.FC<{
   const handlePostSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     mutateUploadFile({ token, file: postImage });
-    setActiveTab("overview");
   };
 
   return (

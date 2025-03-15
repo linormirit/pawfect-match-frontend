@@ -38,7 +38,6 @@ const Overview: React.FC = () => {
       <Tabs
         color={menuColor}
         variant={"pills"}
-        keepMounted={false}
         orientation={"vertical"}
         value={activeTab}
         onChange={setActiveTab}
