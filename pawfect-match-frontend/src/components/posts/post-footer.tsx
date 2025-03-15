@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, ThemeIcon } from "@mantine/core";
 import { Flex, Stack, Text } from "@mantine/core";
@@ -11,17 +11,12 @@ import { pawGray, pawGreen } from "../../consts";
 const PostFooter: React.FC<
   Pick<Post, "id" | "userId" | "likedBy"> & { username: string }
 > = ({ id, userId, likedBy, username }) => {
-  const [isLiked, setIsLiked] = useState<boolean>();
+  const [isLiked, setIsLiked] = useState<boolean>(likedBy.includes(userId));
   const [commentsOpened, { open, close }] = useDisclosure(false);
 
   const handlePawClick = () => {
     setIsLiked((isLiked) => !isLiked);
   };
-
-  useEffect(() => {
-    const isLikedByUser = likedBy.includes(userId);
-    setIsLiked(isLikedByUser);
-  }, [userId, likedBy]);
 
   return (
     <Stack justify={"center"}>

@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
 import { Flex, Stack, Title, Text } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
-import { fetchPosts } from "../../services/post-service";
 import { newFeatureSubText, newFeatureText } from "../../strings";
 
 const PostsList: React.FC = () => {
-  const [posts, setPosts] = useState<PostType[]>([]);
-
-  useEffect(() => {
-    setPosts(fetchPosts());
-  }, []);
+const posts: PostType[] = [];
 
   return (
     <Flex mt={"xl"}>

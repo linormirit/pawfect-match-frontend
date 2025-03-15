@@ -4,12 +4,13 @@ import { createContext, useContext } from "react";
 import { User } from "../types/user";
 
 interface UserContextType {
-  loggedUser: User | null;
   token: string | null;
+  loggedUser: User | null;
+  loading: boolean;
+  isSuccess: boolean;
+  error: string | null;
   login: (email: string, password: string) => void;
   logout: () => void;
-  error: string | null;
-  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

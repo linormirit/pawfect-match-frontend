@@ -13,10 +13,11 @@ import {
 import { pawGreen } from "../../consts";
 import { loginText, signUpText } from "../../strings";
 import { useUser } from "../../contexts/user-context";
+import { useEffect } from "react";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login, error, loading: isLoading } = useUser();
+  const { login, error, loading: isLoading, isSuccess } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -39,6 +40,12 @@ const LoginForm: React.FC = () => {
   const goToSignUp = () => {
     navigate("/signup");
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/overview");
+    }
+  }, [form, isSuccess]);
 
   return (
     <Card shadow={"sm"} padding="lg" radius="md" w={"24vw"} withBorder>

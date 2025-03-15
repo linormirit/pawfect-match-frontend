@@ -1,22 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IconSend } from "@tabler/icons-react";
 import { Stack, TextInput, ThemeIcon } from "@mantine/core";
 
 import { Comment } from "../posts/comment";
 import { commentPlaceholderText } from "../../strings";
 import { Comment as CommentType } from "../../types/comment";
-import { getCommentsByPostId } from "../../services/comment-service";
 
 const Comments: React.FC<{ postId: string; username: string }> = ({
-  postId,
+  // postId,
   username,
 }) => {
-  const [comments, setComments] = useState<CommentType[]>([]);
+  const comments: CommentType[] = [];
   const [commentText, setCommentText] = useState("");
-
-  useEffect(() => {
-    setComments(getCommentsByPostId(postId));
-  }, [postId]);
 
   const handleComment = () => {
     setCommentText('');

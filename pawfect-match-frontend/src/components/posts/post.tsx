@@ -15,6 +15,8 @@ const Post: React.FC<PostType> = ({
 }) => {
   const { loggedUser } = useUser();
 
+  console.log(loggedUser);
+
   return (
     !isNil(loggedUser) && (
       <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>

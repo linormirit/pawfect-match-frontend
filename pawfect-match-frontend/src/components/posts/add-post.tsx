@@ -16,7 +16,7 @@ import {
 import { flatMap, isNil } from "lodash";
 import { useForm } from "@mantine/form";
 import { useMemo, useState } from "react";
-import { useFetch } from "@mantine/hooks";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   newPostText,
@@ -26,18 +26,23 @@ import {
   autoCompletePlaceholder,
 } from "../../strings";
 import { BreedList } from "../../types/dog";
-import { dogApi } from "../../services/dog-service";
+import { fetchBreedsList } from "../../services/dog-service";
 
 const AddPost: React.FC = () => {
   const [postImage, setPostImage] = useState<File>();
+
   const {
     data: breedList,
     error,
-    loading,
-  } = useFetch<BreedList>(dogApi.getBreedsList);
+    isLoading,
+  } = useQuery<BreedList, Error>({
+    queryKey: ["fetchUserById"],
+    queryFn: () => fetchBreedsList(),
+    enabled: false
+  });
 
   const breeds: string[] = useMemo(() => {
-    if (!loading) {
+    if (!isLoading) {
       if (!error) {
         return flatMap(breedList?.message, (subBreeds, breed) => {
           return subBreeds.map((subBreed) => `${subBreed} ${breed}`);
@@ -48,7 +53,7 @@ const AddPost: React.FC = () => {
     } else {
       return [];
     }
-  }, [breedList, loading, error]);
+  }, [breedList, isLoading, error]);
 
   const imageUrl = useMemo(() => {
     if (postImage) {
@@ -125,7 +130,7 @@ const AddPost: React.FC = () => {
             label={breedAutocompleteLabel}
             placeholder={autoCompletePlaceholder}
             data={breeds}
-            rightSection={loading ? <Loader size={"sm"} /> : null}
+            rightSection={isLoading ? <Loader size={"sm"} /> : null}
           />
         </Stack>
       </Card>

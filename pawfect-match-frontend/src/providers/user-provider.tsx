@@ -24,20 +24,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     mutate: mutateToken,
   } = useMutation<TokenResponse, Error, { email: string; password: string }>({
     mutationFn: fetchToken,
-    onSuccess: ({ accessToken }) => {
-      if (accessToken) {
-        refetchUser();
-      }
-    },
   });
 
   const token = useMemo(() => tokenData?.accessToken ?? "", [tokenData]);
   const userId = useMemo(() => tokenData?._id ?? "", [tokenData]);
 
   const {
+    isSuccess,
     data: userData,
     error: userError,
-    refetch: refetchUser,
     isLoading: userLoading,
   } = useQuery<User, Error>({
     queryKey: ["fetchUserById"],
@@ -88,6 +83,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         login,
         logout,
         loading,
+        isSuccess,
         loggedUser,
         error: errorToDisplay,
       }}
