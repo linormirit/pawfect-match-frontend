@@ -10,14 +10,9 @@ import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
 import { fetchUserById } from "../../services/user-service";
 
-const Post: React.FC<PostType & { postSize: number }> = ({
-  _id,
-  userId,
-  imageURL,
-  content,
-  likeBy,
-  postSize,
-}) => {
+const Post: React.FC<
+  PostType & { postSize: number; view: "profile" | "feed" }
+> = ({ _id, userId, imageURL, content, likeBy, postSize, view }) => {
   const { token, loggedUser } = useUser();
   const { data: postUser } = useQuery<User, Error>({
     queryKey: ["fetchPostUserById"],
@@ -37,25 +32,29 @@ const Post: React.FC<PostType & { postSize: number }> = ({
         withBorder
       >
         <Card.Section>
-          <PostHeader
-            username={postUser.username}
-            avatarURL={postUser.avatarURL}
-          ></PostHeader>
+          {view === "feed" && (
+            <PostHeader
+              username={postUser.username}
+              avatarURL={postUser.avatarURL}
+            ></PostHeader>
+          )}
         </Card.Section>
         <Card.Section>
           <Image src={`${serverBaseUrl}${imageURL}`} height={320} />
         </Card.Section>
-        <Card.Section>
-          <PostFooter
-            _id={_id}
-            likeBy={likeBy}
-            loggedUserId={loggedUser?._id}
-          />
-          <Flex align={"center"} gap={"sm"} px={"sm"}>
-            <Text style={{ fontWeight: "bold" }}>{postUser?.username}</Text>
-            <Text>{content}</Text>
-          </Flex>
-        </Card.Section>
+        {view === "feed" && (
+          <Card.Section>
+            <PostFooter
+              _id={_id}
+              likeBy={likeBy}
+              loggedUserId={loggedUser?._id}
+            />
+            <Flex align={"center"} gap={"sm"} px={"sm"}>
+              <Text style={{ fontWeight: "bold" }}>{postUser?.username}</Text>
+              <Text>{content}</Text>
+            </Flex>
+          </Card.Section>
+        )}
       </Card>
     )
   );

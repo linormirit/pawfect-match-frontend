@@ -82,7 +82,7 @@ const UserProfile: React.FC<{
           isLoading={isLoading}
           display={"grid"}
           isFeatureFlag={false}
-          postSize={400}
+          postSize={320}
         />
       </Stack>
     )
