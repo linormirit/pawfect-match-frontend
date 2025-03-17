@@ -39,18 +39,18 @@ const UserProfile: React.FC<{
   );
 
   const numEngagement = useMemo(() => {
-    return numLikes !== 0 ? numUserLikes / numLikes : 0;
+    return numLikes !== 0 ? (numUserLikes / numLikes) * 100 : 0;
   }, [numUserLikes, numLikes]);
 
   return (
     !isNil(loggedUser) &&
     !isNil(userPosts) && (
-      <Stack mt={"xl"} ml={'xl'} gap={20} align={"flex-start"}>
+      <Stack mt={"xl"} ml={"xl"} gap={20} align={"flex-start"}>
         <Flex align={"start"} gap={"xl"}>
           <Avatar
             size={120}
             radius={"100%"}
-            src={`${serverBaseUrl}/${loggedUser.avatarURL}`}
+            src={`${serverBaseUrl}${loggedUser.avatarURL}`}
           />
           <Stack>
             <Title size={"xl"} mt={10}>

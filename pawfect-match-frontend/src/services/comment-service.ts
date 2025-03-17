@@ -1,37 +1,56 @@
+import { serverBaseUrl } from "../consts";
 import { Comment } from "../types/comment";
 
-const getCommentsByPostId = (postId: string): Comment[] => {
-  const comments: Comment[] = [
-    {
-      id: "1",
-      postId: postId,
-      userId: "1",
-      content: "So cute! I would like to discuss more details",
-      timestamp: new Date(),
-    },
-    {
-      id: "2",
-      postId: postId,
-      userId: "1",
-      content: "He's very friendly, good with kids and answers to Maxi",
-      timestamp: new Date(),
-    },
-    {
-      id: "3",
-      postId: postId,
-      userId: "1",
-      content: "Sounds great! let's meet up",
-      timestamp: new Date(),
-    },
-    {
-      id: "4",
-      postId: postId,
-      userId: "1",
-      content: "OK!",
-      timestamp: new Date(),
-    },
-  ];
-  return comments;
+const commentApi = {
+  createComment: `${serverBaseUrl}/comments`,
+  fetchCommentsByPostId: `${serverBaseUrl}/comments`,
 };
 
-export { getCommentsByPostId };
+const createComment = async ({
+  token,
+  postId,
+  content,
+}: {
+  token: string;
+  postId: string;
+  content: string;
+}): Promise<Comment> => {
+  const response = await fetch(commentApi.createComment, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token,
+    },
+    body: JSON.stringify({ postId, content }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create comment");
+  }
+
+  return response.json();
+};
+
+const fetchCommentsByPostId = async (
+  token: string,
+  postId: string
+): Promise<Comment[]> => {
+  const response = await fetch(
+    `${commentApi.fetchCommentsByPostId}/${postId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: token,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch comments");
+  }
+
+  return response.json();
+};
+
+export { createComment, fetchCommentsByPostId };

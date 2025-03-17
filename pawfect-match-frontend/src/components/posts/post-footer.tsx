@@ -2,20 +2,37 @@ import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, ThemeIcon } from "@mantine/core";
 import { Flex, Stack, Text } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
 import { IconPaw, IconPawFilled, IconMessageCircle } from "@tabler/icons-react";
 
 import { Comments } from "./comments";
 import { Post } from "../../types/post";
 import { pawGray, pawGreen } from "../../consts";
+import { useUser } from "../../contexts/user-context";
+import { updateLikeStatus } from "../../services/like-service";
 
 const PostFooter: React.FC<
   Pick<Post, "_id" | "likeBy"> & { loggedUserId: string }
-> = ({ _id, likeBy, loggedUserId}) => {
-  const [isLiked, setIsLiked] = useState<boolean>(likeBy?.includes(loggedUserId));
+> = ({ _id, likeBy, loggedUserId }) => {
+  const { token } = useUser();
+  const [isLiked, setIsLiked] = useState<boolean>(
+    likeBy?.includes(loggedUserId)
+  );
   const [commentsOpened, { open, close }] = useDisclosure(false);
+  const [likeCount, setLikeCount] = useState<number>(likeBy?.length ?? 0);
+
+  const { mutate: mutateUpdateLike } = useMutation<
+    Post,
+    Error,
+    { token: string; postId: string }
+  >({
+    mutationFn: updateLikeStatus,
+  });
 
   const handlePawClick = () => {
     setIsLiked((isLiked) => !isLiked);
+    setLikeCount((likeCount) => (isLiked ? likeCount - 1 : likeCount + 1));
+    mutateUpdateLike({ token, postId: _id });
   };
 
   return (
@@ -61,7 +78,7 @@ const PostFooter: React.FC<
             style={{ height: "70%", width: "70%" }}
           />
         </ThemeIcon>
-        <Text>{`${likeBy?.length ?? 0} paws`}</Text>
+        <Text>{`${likeCount} paws`}</Text>
       </Flex>
     </Stack>
   );
