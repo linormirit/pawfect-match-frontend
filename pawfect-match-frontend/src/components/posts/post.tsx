@@ -21,8 +21,6 @@ const Post: React.FC<
     enabled: !isEmpty(userId) && !isEmpty(token),
   });
 
-  console.log(postUser);
-
   return (
     !isNil(postUser) &&
     !isNil(loggedUser) && (

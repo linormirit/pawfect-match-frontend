@@ -4,6 +4,7 @@ import { isNil } from "lodash";
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
 import { newFeatureSubText, newFeatureText } from "../../strings";
+import { useMemo } from "react";
 
 const PostsList: React.FC<{
   postSize: number;
@@ -12,6 +13,8 @@ const PostsList: React.FC<{
   display: "grid" | "stack";
   isFeatureFlag: boolean;
 }> = ({ posts, isLoading, display, isFeatureFlag, postSize }) => {
+  const colSpan = useMemo(() => (posts.length < 3 ? 6 : 4), [posts.length]);
+  
   return (
     !isNil(posts) &&
     (!isLoading ? (
@@ -36,7 +39,7 @@ const PostsList: React.FC<{
         ) : (
           <Grid gutter={"xs"}>
             {posts.map((post) => (
-              <Grid.Col span={4} key={post._id}>
+              <Grid.Col span={colSpan} key={post._id}>
                 <Post
                   _id={post._id}
                   view={"profile"}

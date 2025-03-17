@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { isNil, sumBy } from "lodash";
+import { floor, isNil, sumBy } from "lodash";
 import { Avatar, Button, Flex, Stack, Text, Title } from "@mantine/core";
 
 import {
@@ -39,7 +39,7 @@ const UserProfile: React.FC<{
   );
 
   const numEngagement = useMemo(() => {
-    return numLikes !== 0 ? (numUserLikes / numLikes) * 100 : 0;
+    return numLikes !== 0 ? floor((numUserLikes / numLikes) * 100) : 0;
   }, [numUserLikes, numLikes]);
 
   return (

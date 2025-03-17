@@ -36,7 +36,7 @@ const fetchCommentsByPostId = async (
   postId: string
 ): Promise<Comment[]> => {
   const response = await fetch(
-    `${commentApi.fetchCommentsByPostId}/${postId}`,
+    `${commentApi.fetchCommentsByPostId}?postId=${postId}`,
     {
       method: "GET",
       headers: {
