@@ -45,7 +45,7 @@ const UserProfile: React.FC<{
   return (
     !isNil(loggedUser) &&
     !isNil(userPosts) && (
-      <Stack mt={"xl"} gap={"4vh"} align={"flex-start"}>
+      <Stack mt={"xl"} ml={'xl'} gap={20} align={"flex-start"}>
         <Flex align={"start"} gap={"xl"}>
           <Avatar
             size={120}

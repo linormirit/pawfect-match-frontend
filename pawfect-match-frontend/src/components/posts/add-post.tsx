@@ -115,7 +115,7 @@ const AddPost: React.FC<{
   };
 
   return (
-    <Card w={800} shadow={"sm"} radius={"md"} mt={"xl"} p={'xl'} ml={'10vw'} withBorder>
+    <Card w={800} shadow={"sm"} radius={"md"} mt={"xl"} p={'xl'} ml={'12vw'} withBorder>
       <Stack gap={"lg"}>
         <form onSubmit={handlePostSubmit}>
           <Flex align={"center"} justify={"space-between"} ml={"46%"}>

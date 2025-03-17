@@ -1,12 +1,4 @@
-import {
-  Text,
-  Flex,
-  Grid,
-  Stack,
-  Title,
-  Loader,
-  Center,
-} from "@mantine/core";
+import { Text, Flex, Grid, Stack, Title, Loader, Center } from "@mantine/core";
 import { isNil } from "lodash";
 
 import { Post } from "./post";
@@ -30,7 +22,7 @@ const PostsList: React.FC<{
               <Post
                 _id={post._id}
                 key={post._id}
-                view={'feed'}
+                view={"feed"}
                 postSize={postSize}
                 userId={post.userId}
                 content={post.content}
@@ -47,7 +39,7 @@ const PostsList: React.FC<{
               <Grid.Col span={4} key={post._id}>
                 <Post
                   _id={post._id}
-                  view={'profile'}
+                  view={"profile"}
                   postSize={postSize}
                   userId={post.userId}
                   content={post.content}

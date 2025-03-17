@@ -83,16 +83,16 @@ const Overview: React.FC = () => {
             </Tabs.Tab>
           </Tabs.List>
         </Stack>
-        <Flex pl={"xl"}>
+        <Flex>
           <Tabs.Panel value={"overview"}>
             {!isNil(posts) && (
               <Center>
                 <PostsList
                   posts={posts}
+                  postSize={520}
                   display={"stack"}
                   isFeatureFlag={true}
                   isLoading={isLoading}
-                  postSize={520}
                 />
               </Center>
             )}
