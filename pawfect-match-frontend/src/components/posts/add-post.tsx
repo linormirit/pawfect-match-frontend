@@ -132,7 +132,7 @@ const AddPost: React.FC<{
             <Flex align={"center"} gap={"xs"}>
               <Avatar radius={"xl"} size={60} src={loggedUser?.avatarURL} />
               <Textarea
-                w={400}
+                w={340}
                 key={form.key("content")}
                 placeholder={addPostPlaceholder}
                 {...form.getInputProps("content")}
