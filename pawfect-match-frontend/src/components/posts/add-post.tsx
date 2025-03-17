@@ -4,13 +4,12 @@ import {
   Text,
   Stack,
   Image,
-  Center,
   Button,
+  Loader,
   Avatar,
   Textarea,
   FileInput,
   Autocomplete,
-  Loader,
 } from "@mantine/core";
 import { useMutation, QueryObserverResult } from "@tanstack/react-query";
 import { flatMap, isNil } from "lodash";
@@ -116,65 +115,63 @@ const AddPost: React.FC<{
   };
 
   return (
-    <Center mt={"xl"} w={"100%"}>
-      <Card shadow={"sm"} radius={"md"} withBorder>
-        <Stack gap={"lg"}>
-          <form onSubmit={handlePostSubmit}>
-            <Flex align={"center"} justify={"space-between"} ml={"46%"}>
-              <Text size={"22px"} style={{ fontWeight: "bold" }}>
-                {newPostText}
+    <Card w={'96%'} shadow={"sm"} radius={"md"} mt={"xl"} withBorder>
+      <Stack gap={"lg"}>
+        <form onSubmit={handlePostSubmit}>
+          <Flex align={"center"} justify={"space-between"} ml={"46%"}>
+            <Text size={"22px"} style={{ fontWeight: "bold" }}>
+              {newPostText}
+            </Text>
+            <Button variant={"transparent"} p={0} type={"submit"}>
+              <Text size={"xl"} style={{ fontWeight: "bold" }}>
+                {postButtonText}
               </Text>
-              <Button variant={"transparent"} p={0} type={"submit"}>
-                <Text size={"xl"} style={{ fontWeight: "bold" }}>
-                  {postButtonText}
-                </Text>
-              </Button>
-            </Flex>
-            <Flex h={100} gap={"lg"} mt={"sm"} align={"flex-start"}>
-              <Flex align={"center"} gap={"xs"}>
-                <Avatar radius={"xl"} size={60} src={""} />
-                <Textarea
-                  w={200}
-                  key={form.key("content")}
-                  placeholder={addPostPlaceholder}
-                  {...form.getInputProps("content")}
+            </Button>
+          </Flex>
+          <Flex h={100} gap={"lg"} mt={"sm"} align={"flex-start"}>
+            <Flex align={"center"} gap={"xs"}>
+              <Avatar radius={"xl"} size={60} src={""} />
+              <Textarea
+                w={200}
+                key={form.key("content")}
+                placeholder={addPostPlaceholder}
+                {...form.getInputProps("content")}
+              />
+              {isNil(imageUrl) ? (
+                <FileInput
+                  placeholder={"Select Photo"}
+                  value={postImage}
+                  accept={"image/*"}
+                  onChange={(file) => {
+                    if (file) {
+                      setPostImage(file);
+                    }
+                  }}
                 />
-                {isNil(imageUrl) ? (
-                  <FileInput
-                    placeholder={"Select Photo"}
-                    value={postImage}
-                    accept={"image/*"}
-                    onChange={(file) => {
-                      if (file) {
-                        setPostImage(file);
-                      }
-                    }}
-                  />
-                ) : (
-                  <Button
-                    p={"xs"}
-                    size={"sm"}
-                    variant={"outline"}
-                    onClick={handeImageReset}
-                  >
-                    <Text size={"sm"}>Remove Photo</Text>
-                  </Button>
-                )}
-              </Flex>
-              <Image src={imageUrl} radius={"sm"} maw={160} />
+              ) : (
+                <Button
+                  p={"xs"}
+                  size={"sm"}
+                  variant={"outline"}
+                  onClick={handeImageReset}
+                >
+                  <Text size={"sm"}>Remove Photo</Text>
+                </Button>
+              )}
             </Flex>
-            <Autocomplete
-              w={300}
-              label={breedAutocompleteLabel}
-              placeholder={autoCompletePlaceholder}
-              data={breeds}
-              rightSection={loading ? <Loader size={"sm"} /> : null}
-              {...form.getInputProps("breed")}
-            />
-          </form>
-        </Stack>
-      </Card>
-    </Center>
+            <Image src={imageUrl} radius={"sm"} maw={160} />
+          </Flex>
+          <Autocomplete
+            w={300}
+            label={breedAutocompleteLabel}
+            placeholder={autoCompletePlaceholder}
+            data={breeds}
+            rightSection={loading ? <Loader size={"sm"} /> : null}
+            {...form.getInputProps("breed")}
+          />
+        </form>
+      </Stack>
+    </Card>
   );
 };
 
