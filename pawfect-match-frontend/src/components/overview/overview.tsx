@@ -58,7 +58,10 @@ const Overview: React.FC = () => {
         variant={"pills"}
         orientation={"vertical"}
         value={activeTab}
-        onChange={setActiveTab}
+        onChange={(tab) => {
+          setActiveTab(tab);
+          refetchPosts();
+        }}
       >
         <Stack gap={"lg"} mt={"md"}>
           <Logo fontSize={50} imageSize={70} />
