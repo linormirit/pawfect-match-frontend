@@ -6,6 +6,7 @@ const userApi = {
   fetchToken: `${serverBaseUrl}/auth/login`,
   fetchUserById: `${serverBaseUrl}/users`,
   register: `${serverBaseUrl}/auth/register`,
+  fetchUsers: `${serverBaseUrl}/users`,
 };
 
 const fetchToken = async ({
@@ -75,4 +76,20 @@ const register = async ({
   return response.json();
 };
 
-export { fetchToken, fetchUserById, register };
+const fetchUsers = async (token: string): Promise<User[]> => {
+  const response = await fetch(userApi.fetchUsers, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  return response.json();
+};
+
+export { fetchToken, fetchUserById, register, fetchUsers };

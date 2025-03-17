@@ -13,24 +13,32 @@ const newFeatureSubText = "Try out our new feature!";
 const addPostPlaceholder = "What would you like to post?";
 const newPostText = "New Post";
 const postButtonText = "Post";
+const postsText = 'posts';
+const likesText = 'likes';
+const engagementRateText = 'engagement rate';
 const breedAutocompleteLabel = "Dog breed";
 const autoCompletePlaceholder = "Pick value or enter anything";
+const editProfileButtonText = 'Edit profile';
 
 export {
-  homePageTitle,
-  homePageText,
-  homePageSubText,
+  postsText,
+  likesText,
   loginText,
   signUpText,
-  invalidPasswordText,
-  passwordNotConfirmdText,
-  chooseAvatarText,
-  commentPlaceholderText,
-  newFeatureText,
-  newFeatureSubText,
-  addPostPlaceholder,
   newPostText,
+  homePageText,
+  homePageTitle,
+  newFeatureText,
   postButtonText,
+  homePageSubText,
+  chooseAvatarText,
+  newFeatureSubText,
+  engagementRateText,
+  addPostPlaceholder,
+  invalidPasswordText,
+  editProfileButtonText,
+  commentPlaceholderText,
   breedAutocompleteLabel,
-  autoCompletePlaceholder
+  passwordNotConfirmdText,
+  autoCompletePlaceholder,
 };

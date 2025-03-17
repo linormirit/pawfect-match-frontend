@@ -4,7 +4,6 @@ import {
   Text,
   Stack,
   Image,
-  Title,
   Center,
   Button,
   Avatar,
@@ -46,9 +45,7 @@ const AddPost: React.FC<{
     loading,
   } = useFetch<BreedList>(dogApi.fetchBreedsList);
 
-  const {
-    mutate: mutateCreatePost,
-  } = useMutation<
+  const { mutate: mutateCreatePost } = useMutation<
     Post,
     Error,
     { token: string; post: Pick<Post, "content" | "breed" | "imageURL"> }
@@ -60,23 +57,23 @@ const AddPost: React.FC<{
     },
   });
 
-  const {
-    mutate: mutateUploadFile,
-  } = useMutation<{ url: string }, Error, { file: File | null }>(
-    {
-      mutationFn: uploadFile,
-      onSuccess: ({ url }) => {
-        mutateCreatePost({
-          token,
-          post: {
-            content: form.getValues().content,
-            breed: form.getValues().breed,
-            imageURL: url,
-          },
-        });
-      },
-    }
-  );
+  const { mutate: mutateUploadFile } = useMutation<
+    { url: string },
+    Error,
+    { file: File | null }
+  >({
+    mutationFn: uploadFile,
+    onSuccess: ({ url }) => {
+      mutateCreatePost({
+        token,
+        post: {
+          content: form.getValues().content,
+          breed: form.getValues().breed,
+          imageURL: url,
+        },
+      });
+    },
+  });
 
   const breeds: string[] = useMemo(() => {
     if (!loading) {
@@ -104,6 +101,9 @@ const AddPost: React.FC<{
       content: "",
       breed: "",
     },
+    validate: {
+      breed: (value) => (value.trim() ? null : "breed is required"),
+    },
   });
 
   const handeImageReset = () => {
@@ -116,34 +116,25 @@ const AddPost: React.FC<{
   };
 
   return (
-    <Center>
-      <Card
-        h={320}
-        w={"100%"}
-        m={"xl"}
-        shadow={"sm"}
-        radius={"md"}
-        padding={"xl"}
-        withBorder
-      >
+    <Center mt={"xl"} w={"100%"}>
+      <Card shadow={"sm"} radius={"md"} withBorder>
         <Stack gap={"lg"}>
           <form onSubmit={handlePostSubmit}>
-            <Flex align={"center"} justify={"space-between"} ml={"40%"}>
-              <Title>{newPostText}</Title>
-              <Button variant={"transparent"} size={"xl"} p={0} type={"submit"}>
-                {postButtonText}
+            <Flex align={"center"} justify={"space-between"} ml={"46%"}>
+              <Text size={"22px"} style={{ fontWeight: "bold" }}>
+                {newPostText}
+              </Text>
+              <Button variant={"transparent"} p={0} type={"submit"}>
+                <Text size={"xl"} style={{ fontWeight: "bold" }}>
+                  {postButtonText}
+                </Text>
               </Button>
             </Flex>
-            <Flex
-              h={100}
-              mt={"sm"}
-              align={"flex-start"}
-              justify={"space-between"}
-            >
+            <Flex h={100} gap={"lg"} mt={"sm"} align={"flex-start"}>
               <Flex align={"center"} gap={"xs"}>
                 <Avatar radius={"xl"} size={60} src={""} />
                 <Textarea
-                  w={400}
+                  w={200}
                   key={form.key("content")}
                   placeholder={addPostPlaceholder}
                   {...form.getInputProps("content")}
@@ -161,15 +152,16 @@ const AddPost: React.FC<{
                   />
                 ) : (
                   <Button
-                    variant={"outline"}
                     p={"xs"}
+                    size={"sm"}
+                    variant={"outline"}
                     onClick={handeImageReset}
                   >
                     <Text size={"sm"}>Remove Photo</Text>
                   </Button>
                 )}
               </Flex>
-              <Image src={imageUrl} radius={"sm"} maw={200} />
+              <Image src={imageUrl} radius={"sm"} maw={160} />
             </Flex>
             <Autocomplete
               w={300}
