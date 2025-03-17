@@ -159,7 +159,7 @@ const AddPost: React.FC<{
                 </Button>
               )}
             </Flex>
-            <Image src={imageUrl} radius={"sm"} maw={160} />
+            <Image src={imageUrl} radius={"sm"} maw={160} mah={180}/>
           </Flex>
           <Autocomplete
             w={300}

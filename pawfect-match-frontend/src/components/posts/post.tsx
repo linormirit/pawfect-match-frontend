@@ -1,6 +1,6 @@
 import { isEmpty, isNil } from "lodash";
+import { Card, Image } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Flex, Image, Text } from "@mantine/core";
 
 import { User } from "../../types/user";
 import { PostFooter } from "./post-footer";
@@ -14,11 +14,14 @@ const Post: React.FC<
   PostType & { postSize: number; view: "profile" | "feed" }
 > = ({ _id, userId, imageURL, content, likeBy, postSize, view }) => {
   const { token, loggedUser } = useUser();
+
   const { data: postUser } = useQuery<User, Error>({
-    queryKey: ["fetchPostUserById"],
+    queryKey: ["fetchPostUserById", userId],
     queryFn: () => fetchUserById(userId, token),
     enabled: !isEmpty(userId) && !isEmpty(token),
   });
+
+  console.log(postUser);
 
   return (
     !isNil(postUser) &&
@@ -42,19 +45,17 @@ const Post: React.FC<
         <Card.Section>
           <Image src={`${serverBaseUrl}${imageURL}`} height={320} />
         </Card.Section>
-        {view === "feed" && (
-          <Card.Section>
+        <Card.Section>
+          {view === "feed" && (
             <PostFooter
               _id={_id}
               likeBy={likeBy}
-              loggedUserId={loggedUser?._id}
+              content={content}
+              loggedUserId={loggedUser._id}
+              postUsername={postUser.username}
             />
-            <Flex align={"center"} gap={"sm"} px={"sm"}>
-              <Text style={{ fontWeight: "bold" }}>{postUser?.username}</Text>
-              <Text>{content}</Text>
-            </Flex>
-          </Card.Section>
-        )}
+          )}
+        </Card.Section>
       </Card>
     )
   );

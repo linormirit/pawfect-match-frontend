@@ -12,8 +12,11 @@ import { useUser } from "../../contexts/user-context";
 import { updateLikeStatus } from "../../services/like-service";
 
 const PostFooter: React.FC<
-  Pick<Post, "_id" | "likeBy"> & { loggedUserId: string }
-> = ({ _id, likeBy, loggedUserId }) => {
+  Pick<Post, "_id" | "likeBy" | "content"> & {
+    loggedUserId: string;
+    postUsername: string;
+  }
+> = ({ _id, likeBy, loggedUserId, content, postUsername }) => {
   const { token } = useUser();
   const [isLiked, setIsLiked] = useState<boolean>(
     likeBy?.includes(loggedUserId)
@@ -36,7 +39,7 @@ const PostFooter: React.FC<
   };
 
   return (
-    <Stack justify={"center"}>
+    <Stack justify={"center"} gap={2}>
       <Flex>
         <ThemeIcon variant={"transparent"} size={60}>
           {isLiked ? (
@@ -79,6 +82,10 @@ const PostFooter: React.FC<
           />
         </ThemeIcon>
         <Text>{`${likeCount} paws`}</Text>
+      </Flex>
+      <Flex align={"center"} gap={"sm"} px={"sm"}>
+        <Text style={{ fontWeight: "bold" }}>{postUsername}</Text>
+        <Text>{content}</Text>
       </Flex>
     </Stack>
   );

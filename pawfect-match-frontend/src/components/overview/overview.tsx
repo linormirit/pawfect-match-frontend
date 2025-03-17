@@ -89,7 +89,7 @@ const Overview: React.FC = () => {
               <Center>
                 <PostsList
                   posts={posts}
-                  postSize={520}
+                  postSize={560}
                   display={"stack"}
                   isFeatureFlag={true}
                   isLoading={isLoading}
