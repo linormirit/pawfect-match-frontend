@@ -36,7 +36,7 @@ const AddPost: React.FC<{
   refetchPosts: () => Promise<QueryObserverResult<Post[], Error>>;
 }> = ({ setActiveTab, refetchPosts }) => {
   const [postImage, setPostImage] = useState<File | null>(null);
-  const { token } = useUser();
+  const { token, loggedUser } = useUser();
 
   const {
     data: breedList,
@@ -115,7 +115,7 @@ const AddPost: React.FC<{
   };
 
   return (
-    <Card w={'96%'} shadow={"sm"} radius={"md"} mt={"xl"} withBorder>
+    <Card w={800} shadow={"sm"} radius={"md"} mt={"xl"} p={'xl'} ml={'10vw'} withBorder>
       <Stack gap={"lg"}>
         <form onSubmit={handlePostSubmit}>
           <Flex align={"center"} justify={"space-between"} ml={"46%"}>
@@ -130,9 +130,9 @@ const AddPost: React.FC<{
           </Flex>
           <Flex h={100} gap={"lg"} mt={"sm"} align={"flex-start"}>
             <Flex align={"center"} gap={"xs"}>
-              <Avatar radius={"xl"} size={60} src={""} />
+              <Avatar radius={"xl"} size={60} src={loggedUser?.avatarURL} />
               <Textarea
-                w={200}
+                w={400}
                 key={form.key("content")}
                 placeholder={addPostPlaceholder}
                 {...form.getInputProps("content")}

@@ -1,11 +1,11 @@
 import {
-  Button,
   Card,
+  Text,
   Group,
   Stack,
-  TextInput,
-  Text,
+  Button,
   Loader,
+  TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
             {...form.getInputProps("password")}
           />
           {loading ? (
-            <Loader />
+            <Loader size={'sm'}/>
           ) : (
             <Text style={{ color: "red" }}>{error}</Text>
           )}

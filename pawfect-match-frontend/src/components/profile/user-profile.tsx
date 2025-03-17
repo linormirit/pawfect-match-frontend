@@ -8,16 +8,15 @@ import {
   engagementRateText,
   editProfileButtonText,
 } from "../../strings";
-import { User } from "../../types/user";
 import { serverBaseUrl } from "../../consts";
+import { PostsList } from "../posts/posts-list";
 import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
-import { PostsList } from "../posts/posts-list";
 
-const UserProfile: React.FC<{ posts: PostType[]; users: User[] }> = ({
-  posts,
-  users,
-}) => {
+const UserProfile: React.FC<{
+  posts: PostType[];
+  isLoading: boolean;
+}> = ({ posts, isLoading }) => {
   const { loggedUser } = useUser();
 
   const userPosts: PostType[] = useMemo(
@@ -34,14 +33,19 @@ const UserProfile: React.FC<{ posts: PostType[]; users: User[] }> = ({
     [loggedUser, userPosts]
   );
 
+  const numLikes: number = useMemo(
+    () => sumBy(posts, (post) => post.likeBy.length),
+    [posts]
+  );
+
   const numEngagement = useMemo(() => {
-    return numUserLikes / users.length;
-  }, [numUserLikes, users.length]);
+    return numLikes !== 0 ? numUserLikes / numLikes : 0;
+  }, [numUserLikes, numLikes]);
 
   return (
     !isNil(loggedUser) &&
     !isNil(userPosts) && (
-      <Stack mt={"xl"} gap={"4vh"} align={'flex-start'}>
+      <Stack mt={"xl"} gap={"4vh"} align={"flex-start"}>
         <Flex align={"start"} gap={"xl"}>
           <Avatar
             size={120}
@@ -73,7 +77,13 @@ const UserProfile: React.FC<{ posts: PostType[]; users: User[] }> = ({
             {editProfileButtonText}
           </Button>
         </Flex>
-        <PostsList posts={userPosts} />
+        <PostsList
+          posts={userPosts}
+          isLoading={isLoading}
+          display={"grid"}
+          isFeatureFlag={false}
+          postSize={400}
+        />
       </Stack>
     )
   );

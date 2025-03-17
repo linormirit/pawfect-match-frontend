@@ -1,23 +1,22 @@
 import {
+  Flex,
+  Tabs,
+  Text,
+  Stack,
+  Avatar,
+  Center,
+  ThemeIcon,
+} from "@mantine/core";
+import {
   IconCameraHeart,
   IconChevronLeft,
   IconSquareRoundedPlus,
 } from "@tabler/icons-react";
 import { isNil } from "lodash";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Avatar,
-  Flex,
-  Stack,
-  Tabs,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
 
 import { Logo } from "../home/logo";
-import { User } from "../../types/user";
 import { menuColor } from "../../consts";
 import { AddPost } from "../posts/add-post";
 import { PostsList } from "../posts/posts-list";
@@ -25,24 +24,25 @@ import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
 import { UserProfile } from "../profile/user-profile";
 import { fetchPosts } from "../../services/post-service";
-import { fetchUsers } from "../../services/user-service";
-import { newFeatureSubText, newFeatureText } from "../../strings";
 
 const Overview: React.FC = () => {
-  const { logout, token } = useUser();
+  const { logout, token, loading: isLoadingLoggedUser } = useUser();
   const [activeTab, setActiveTab] = useState<string | null>("overview");
 
-  const { data: posts, refetch: refetchPosts } = useQuery<PostType[], Error>({
+  const {
+    data: posts,
+    isLoading: isLoadingPosts,
+    refetch: refetchPosts,
+  } = useQuery<PostType[], Error>({
     queryKey: ["fetchPosts"],
     queryFn: () => fetchPosts(token),
     enabled: !isNil(token),
   });
 
-  const { data: users } = useQuery<User[], Error>({
-    queryKey: ["fetchUsers"],
-    queryFn: () => fetchUsers(token),
-    enabled: !isNil(token),
-  });
+  const isLoading = useMemo(
+    () => isLoadingPosts || isLoadingLoggedUser,
+    [isLoadingPosts, isLoadingLoggedUser]
+  );
 
   return (
     <Flex>
@@ -60,7 +60,7 @@ const Overview: React.FC = () => {
         value={activeTab}
         onChange={setActiveTab}
       >
-        <Stack gap={"lg"} mt={"md"} w={"28%"}>
+        <Stack gap={"lg"} mt={"md"}>
           <Logo fontSize={50} imageSize={70} />
           <Tabs.List p={"sm"}>
             <Tabs.Tab
@@ -83,23 +83,34 @@ const Overview: React.FC = () => {
             </Tabs.Tab>
           </Tabs.List>
         </Stack>
-        <Flex w={"42%"} pl={"xl"} gap={"4vw"}>
+        <Flex pl={"xl"}>
           <Tabs.Panel value={"overview"}>
-            {!isNil(posts) && <PostsList posts={posts} />}
+            {!isNil(posts) && (
+              <Center>
+                <PostsList
+                  posts={posts}
+                  display={"stack"}
+                  isFeatureFlag={true}
+                  isLoading={isLoading}
+                  postSize={520}
+                />
+              </Center>
+            )}
           </Tabs.Panel>
           <Tabs.Panel value={"profile"}>
-            {!isNil(posts) && !isNil(users) && (
-              <UserProfile posts={posts} users={users} />
+            {!isNil(posts) && (
+              <UserProfile posts={posts} isLoading={isLoading} />
             )}
           </Tabs.Panel>
           <Tabs.Panel value={"addPost"}>
-            <AddPost setActiveTab={setActiveTab} refetchPosts={refetchPosts} />
+            <Center>
+              <AddPost
+                setActiveTab={setActiveTab}
+                refetchPosts={refetchPosts}
+              />
+            </Center>
           </Tabs.Panel>
         </Flex>
-        <Stack w={"26%"} mt={"xl"}>
-          <Title>{newFeatureText}</Title>
-          <Text size={"xl"}>{newFeatureSubText}</Text>
-        </Stack>
       </Tabs>
     </Flex>
   );

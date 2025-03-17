@@ -6,7 +6,7 @@ const Logo: React.FC<{ fontSize: number; imageSize: number }> = ({
   imageSize,
 }) => {
   return (
-    <Flex gap={"sm"} align={"center"}>
+    <Flex gap={"xs"} align={"center"}>
       <HomeTitle fontSize={fontSize} />
       <Image
         h={imageSize}

@@ -1,6 +1,6 @@
 import { isEmpty, isNil } from "lodash";
-import { Card, Flex, Image, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import { Card, Flex, Image, Text } from "@mantine/core";
 
 import { User } from "../../types/user";
 import { PostFooter } from "./post-footer";
@@ -10,12 +10,13 @@ import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
 import { fetchUserById } from "../../services/user-service";
 
-const Post: React.FC<PostType> = ({
+const Post: React.FC<PostType & { postSize: number }> = ({
   _id,
   userId,
   imageURL,
   content,
   likeBy,
+  postSize,
 }) => {
   const { token, loggedUser } = useUser();
   const { data: postUser } = useQuery<User, Error>({
@@ -27,7 +28,14 @@ const Post: React.FC<PostType> = ({
   return (
     !isNil(postUser) &&
     !isNil(loggedUser) && (
-      <Card shadow={"sm"} padding={"lg"} radius={"md"} w={"36vw"} withBorder>
+      <Card
+        w={postSize}
+        h={postSize}
+        shadow={"sm"}
+        padding={"lg"}
+        radius={"md"}
+        withBorder
+      >
         <Card.Section>
           <PostHeader
             username={postUser.username}
@@ -35,7 +43,7 @@ const Post: React.FC<PostType> = ({
           ></PostHeader>
         </Card.Section>
         <Card.Section>
-          <Image src={`${serverBaseUrl}${imageURL}`} height={500} />
+          <Image src={`${serverBaseUrl}${imageURL}`} height={320} />
         </Card.Section>
         <Card.Section>
           <PostFooter
