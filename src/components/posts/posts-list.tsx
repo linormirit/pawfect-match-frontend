@@ -1,10 +1,11 @@
-import { Text, Flex, Grid, Stack, Title, Loader, Center } from "@mantine/core";
 import { isNil } from "lodash";
+import { useMemo } from "react";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { Text, Flex, Grid, Stack, Title, Loader, Center } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
 import { newFeatureSubText, newFeatureText } from "../../strings";
-import { useMemo } from "react";
 
 const PostsList: React.FC<{
   postSize: number;
@@ -12,9 +13,12 @@ const PostsList: React.FC<{
   isLoading: boolean;
   display: "grid" | "stack";
   isFeatureFlag: boolean;
-}> = ({ posts, isLoading, display, isFeatureFlag, postSize }) => {
+  refetchPosts: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<PostType[], Error>>;
+}> = ({ posts, isLoading, display, isFeatureFlag, postSize, refetchPosts }) => {
   const colSpan = useMemo(() => (posts.length < 3 ? 6 : 4), [posts.length]);
-  
+
   return (
     !isNil(posts) &&
     (!isLoading ? (
@@ -33,6 +37,7 @@ const PostsList: React.FC<{
                 imageURL={post.imageURL}
                 likeBy={post.likeBy}
                 timestamp={post.timestamp}
+                refetchPosts={refetchPosts}
               />
             ))}
           </Stack>
@@ -50,6 +55,7 @@ const PostsList: React.FC<{
                   imageURL={post.imageURL}
                   likeBy={post.likeBy}
                   timestamp={post.timestamp}
+                  refetchPosts={refetchPosts}
                 />
               </Grid.Col>
             ))}

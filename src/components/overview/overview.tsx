@@ -96,13 +96,18 @@ const Overview: React.FC = () => {
                   display={"stack"}
                   isFeatureFlag={true}
                   isLoading={isLoading}
+                  refetchPosts={refetchPosts}
                 />
               </Center>
             )}
           </Tabs.Panel>
           <Tabs.Panel value={"profile"}>
             {!isNil(posts) && (
-              <UserProfile posts={posts} isLoading={isLoading} />
+              <UserProfile
+                posts={posts}
+                isLoading={isLoading}
+                refetchPosts={refetchPosts}
+              />
             )}
           </Tabs.Panel>
           <Tabs.Panel value={"addPost"}>

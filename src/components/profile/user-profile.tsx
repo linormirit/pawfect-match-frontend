@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { floor, isNil, sumBy } from "lodash";
 import { useDisclosure } from "@mantine/hooks";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { Avatar, Button, Flex, Modal, Stack, Text, Title } from "@mantine/core";
 
 import {
@@ -10,15 +11,18 @@ import {
   editProfileButtonText,
 } from "../../strings";
 import { serverBaseUrl } from "../../consts";
+import { EditProfile } from "./edit-profile";
 import { PostsList } from "../posts/posts-list";
 import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
-import { EditProfile } from "./edit-profile";
 
 const UserProfile: React.FC<{
   posts: PostType[];
   isLoading: boolean;
-}> = ({ posts, isLoading }) => {
+  refetchPosts: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<PostType[], Error>>;
+}> = ({ posts, isLoading, refetchPosts }) => {
   const { loggedUser } = useUser();
   const [editProfileOpened, { open, close }] = useDisclosure(false);
 
@@ -89,6 +93,7 @@ const UserProfile: React.FC<{
           display={"grid"}
           isFeatureFlag={false}
           postSize={320}
+          refetchPosts={refetchPosts}
         />
       </Stack>
     )

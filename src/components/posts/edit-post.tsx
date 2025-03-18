@@ -1,6 +1,7 @@
 import {
-  Avatar,
+  Image,
   Button,
+  Card,
   FileInput,
   Flex,
   Loader,
@@ -8,55 +9,65 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import {
+  useMutation,
+  RefetchOptions,
+  QueryObserverResult,
+} from "@tanstack/react-query";
 import { isNil } from "lodash";
+import { useForm } from "@mantine/form";
 import { useMemo, useState } from "react";
 
 import { serverBaseUrl } from "../../consts";
+import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
-import { useForm } from "@mantine/form";
-import { useMutation } from "@tanstack/react-query";
 import { uploadFile } from "../../services/file-service";
-import { User } from "../../types/user";
-import { updateUserById } from "../../services/user-service";
+import { updatePost } from "../../services/post-service";
 
-const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
-  const { token, setLoggedUser } = useUser();
+const EditPost: React.FC<{
+  postId: string;
+  content: string;
+  close: () => void;
+  refetchPosts: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<PostType[], Error>>;
+}> = ({ postId, content, close, refetchPosts }) => {
+  const { token } = useUser();
   const { loggedUser } = useUser();
-  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const [postImage, setPostImage] = useState<File | null>(null);
 
-  const avatarUrl = useMemo(() => {
-    if (avatarImage) {
-      return URL.createObjectURL(avatarImage);
+  const postUrl = useMemo(() => {
+    if (postImage) {
+      return URL.createObjectURL(postImage);
     } else {
       return !isNil(loggedUser)
         ? `${serverBaseUrl}${loggedUser?.avatarURL}`
         : "";
     }
-  }, [loggedUser, avatarImage]);
+  }, [loggedUser, postImage]);
 
   const handeImageReset = () => {
-    setAvatarImage(null);
+    setPostImage(null);
   };
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      username: loggedUser?.username,
+      content: content,
     },
     validate: {
-      username: (value) => (value?.trim() ? null : "username is required"),
+      content: (value) => (value?.trim() ? null : "content is required"),
     },
   });
 
-  const { mutate: mutateUpdateUser, isPending } = useMutation<
-    User,
+  const { mutate: mutateUpdatePost, isPending } = useMutation<
+    PostType,
     Error,
-    { token: string; user: Pick<User, "_id" | "avatarURL" | "username"> }
+    { token: string; post: Pick<PostType, "_id" | "content" | "imageURL"> }
   >({
-    mutationFn: updateUserById,
-    onSuccess: (user) => {
-      setLoggedUser(user);
-      localStorage.setItem("user", JSON.stringify(user));
+    mutationFn: updatePost,
+    onSuccess: () => {
+      refetchPosts();
       close();
     },
   });
@@ -68,39 +79,39 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
   >({
     mutationFn: uploadFile,
     onSuccess: ({ url }) => {
-      if (!isNil(loggedUser)) {
-        mutateUpdateUser({
-          token,
-          user: {
-            _id: loggedUser?._id,
-            avatarURL: url,
-            username: form.getValues().username ?? "",
-          },
-        });
-      }
+      mutateUpdatePost({
+        token,
+        post: {
+          _id: postId,
+          content: form.getValues().content,
+          imageURL: url,
+        },
+      });
     },
   });
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    mutateUploadFile({ file: avatarImage });
+    mutateUploadFile({ file: postImage });
   };
 
   return (
     <Stack p={"xl"}>
       <form onSubmit={handleSubmit}>
-        <Stack justify={"center"} align={"center"}>
-          <Avatar size={120} radius={"100%"} src={avatarUrl} />
-          {isNil(avatarImage) ? (
+        <Stack justify={"center"} align={"center"} gap={2}>
+          <Card>
+            <Image radius={"xl"} src={postUrl} />
+          </Card>
+          {isNil(postImage) ? (
             <FileInput
               size={"lg"}
               variant={"unstyled"}
-              placeholder={"Edit avatar"}
-              value={avatarImage}
+              placeholder={"Edit image"}
+              value={postImage}
               accept={"image/*"}
               onChange={(file) => {
                 if (file) {
-                  setAvatarImage(file);
+                  setPostImage(file);
                 }
               }}
             />
@@ -116,11 +127,11 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
           )}
         </Stack>
         <Flex gap={12} align={"center"}>
-          <Text>Username</Text>
+          <Text>Content</Text>
           <TextInput
             w={200}
-            key={form.key("username")}
-            {...form.getInputProps("username")}
+            key={form.key("content")}
+            {...form.getInputProps("content")}
           />
         </Flex>
         <Flex justify={"center"} mt={"xl"}>
@@ -137,4 +148,4 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
   );
 };
 
-export { EditProfile };
+export { EditPost };
