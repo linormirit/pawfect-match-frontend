@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { floor, isNil, sumBy } from "lodash";
-import { Avatar, Button, Flex, Stack, Text, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { Avatar, Button, Flex, Modal, Stack, Text, Title } from "@mantine/core";
 
 import {
   postsText,
@@ -12,12 +13,14 @@ import { serverBaseUrl } from "../../consts";
 import { PostsList } from "../posts/posts-list";
 import { Post as PostType } from "../../types/post";
 import { useUser } from "../../contexts/user-context";
+import { EditProfile } from "./edit-profile";
 
 const UserProfile: React.FC<{
   posts: PostType[];
   isLoading: boolean;
 }> = ({ posts, isLoading }) => {
   const { loggedUser } = useUser();
+  const [editProfileOpened, { open, close }] = useDisclosure(false);
 
   const userPosts: PostType[] = useMemo(
     () =>
@@ -73,10 +76,13 @@ const UserProfile: React.FC<{
           </Stack>
         </Flex>
         <Flex>
-          <Button variant={"outline"} w={200}>
+          <Button variant={"outline"} w={200} onClick={open}>
             {editProfileButtonText}
           </Button>
         </Flex>
+        <Modal opened={editProfileOpened} onClose={close} size={800}>
+          <EditProfile close={close} />
+        </Modal>
         <PostsList
           posts={userPosts}
           isLoading={isLoading}

@@ -7,6 +7,7 @@ const userApi = {
   fetchUserById: `${serverBaseUrl}/users`,
   register: `${serverBaseUrl}/auth/register`,
   fetchUsers: `${serverBaseUrl}/users`,
+  updateUserById: `${serverBaseUrl}/users`,
 };
 
 const fetchToken = async ({
@@ -50,6 +51,29 @@ const fetchUserById = async (
   return response.json();
 };
 
+const updateUserById = async ({
+  token,
+  user,
+}: {
+  token: string | undefined;
+  user: Pick<User, "_id" | "avatarURL" | "username">;
+}): Promise<User> => {
+  const response = await fetch(`${userApi.updateUserById}/${user._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: token ?? "",
+    },
+    body: JSON.stringify(user),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update user data");
+  }
+
+  return response.json();
+};
+
 const register = async ({
   email,
   username,
@@ -57,7 +81,7 @@ const register = async ({
   avatarURL,
 }: {
   email: string;
-  username: string,
+  username: string;
   password: string;
   avatarURL: string;
 }): Promise<TokenResponse> => {
@@ -92,4 +116,4 @@ const fetchUsers = async (token: string): Promise<User[]> => {
   return response.json();
 };
 
-export { fetchToken, fetchUserById, register, fetchUsers };
+export { fetchToken, fetchUserById, register, fetchUsers, updateUserById };

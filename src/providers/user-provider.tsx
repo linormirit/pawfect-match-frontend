@@ -36,7 +36,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     error: userError,
     isLoading: userLoading,
   } = useQuery<User, Error>({
-    queryKey: ["fetchUserById"],
+    queryKey: ["fetchUserById", userId],
     queryFn: () => fetchUserById(userId, token?.accessToken),
     enabled: !isEmpty(userId) && !isEmpty(token?.accessToken),
   });
