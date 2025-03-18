@@ -5,6 +5,7 @@ import {
   Button,
   FileInput,
   Flex,
+  Loader,
   Stack,
   Text,
   TextInput,
@@ -19,7 +20,7 @@ import { User } from "../../types/user";
 import { updateUserById } from "../../services/user-service";
 
 const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
-  const { token } = useUser();
+  const { token, setLoggedUser } = useUser();
   const { loggedUser } = useUser();
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
 
@@ -47,13 +48,17 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
     },
   });
 
-  const { mutate: mutateUpdateUser } = useMutation<
+  const { mutate: mutateUpdateUser, isPending } = useMutation<
     User,
     Error,
     { token: string; user: Pick<User, "_id" | "avatarURL" | "username"> }
   >({
     mutationFn: updateUserById,
-    onSuccess: () => {},
+    onSuccess: (user) => {
+      setLoggedUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      close();
+    },
   });
 
   const { mutate: mutateUploadFile } = useMutation<
@@ -79,7 +84,6 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     mutateUploadFile({ file: avatarImage });
-    close();
   };
 
   return (
@@ -120,9 +124,13 @@ const EditProfile: React.FC<{ close: () => void }> = ({ close }) => {
           />
         </Flex>
         <Flex justify={"center"} mt={"xl"}>
-          <Button type={"submit"} variant={"outline"}>
-            Save changes
-          </Button>
+          {!isPending ? (
+            <Button type={"submit"} variant={"outline"}>
+              Save changes
+            </Button>
+          ) : (
+            <Loader />
+          )}
         </Flex>
       </form>
     </Stack>

@@ -10,6 +10,7 @@ interface UserContextType {
   error: string;
   login: (email: string, password: string) => void;
   logout: () => void;
+  setLoggedUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

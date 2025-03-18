@@ -117,6 +117,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         loggedUser,
         error: errorToDisplay,
         token: token?.accessToken ?? "",
+        setLoggedUser
       }}
     >
       {children}
