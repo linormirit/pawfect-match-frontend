@@ -51,7 +51,7 @@ const Comments: React.FC<{ postId: string }> = ({ postId }) => {
           <Comment
             key={comment.id}
             content={comment.content}
-            username={"username"}
+            userId={comment.userId}
           />
         ))}
         <TextInput
