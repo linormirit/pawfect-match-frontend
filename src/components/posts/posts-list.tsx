@@ -6,6 +6,7 @@ import { Text, Flex, Grid, Stack, Title } from "@mantine/core";
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
 import { newFeatureSubText, newFeatureText } from "../../strings";
+import { NewFeature } from "../new-feature/new-feature";
 
 const PostsList: React.FC<{
   postSize: number;
@@ -66,6 +67,7 @@ const PostsList: React.FC<{
           <Stack w={"26%"}>
             <Title>{newFeatureText}</Title>
             <Text size={"xl"}>{newFeatureSubText}</Text>
+            <NewFeature />
           </Stack>
         )}
       </Flex>
