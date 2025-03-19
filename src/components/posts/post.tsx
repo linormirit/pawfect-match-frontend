@@ -4,6 +4,7 @@ import {
   RefetchOptions,
   QueryObserverResult,
 } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { isEmpty, isNil } from "lodash";
 import { useDisclosure } from "@mantine/hooks";
 import { ActionIcon, Card, Image, Menu, Modal } from "@mantine/core";
@@ -40,7 +41,7 @@ const Post: React.FC<
   const { token, loggedUser } = useUser();
   const [editPostOpened, { open, close }] = useDisclosure(false);
 
-  const { data: postUser } = useQuery<User, Error>({
+  const { data: postUser, refetch: refetchPostUser } = useQuery<User, Error>({
     queryKey: ["fetchPostUserById", userId],
     queryFn: () => fetchUserById(userId, token),
     enabled: !isEmpty(userId) && !isEmpty(token),
@@ -56,6 +57,12 @@ const Post: React.FC<
       refetchPosts();
     },
   });
+
+  useEffect(() => {
+    if (loggedUser?._id === postUser?._id) {
+      refetchPostUser();
+    }
+  }, [loggedUser, postUser, refetchPostUser]);
 
   return (
     !isNil(postUser) &&

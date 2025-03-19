@@ -5,13 +5,14 @@ import {
 } from "@tanstack/react-query";
 import { useState } from "react";
 import { IconSend } from "@tabler/icons-react";
-import { Loader, Stack, TextInput, ThemeIcon } from "@mantine/core";
+import { Skeleton, Stack, TextInput, ThemeIcon } from "@mantine/core";
 
 import { Comment } from "../posts/comment";
 import { useUser } from "../../contexts/user-context";
 import { commentPlaceholderText } from "../../strings";
 import { Comment as CommentType } from "../../types/comment";
 import { createComment } from "../../services/comment-service";
+import { isEmpty } from "lodash";
 
 const Comments: React.FC<{
   postId: string;
@@ -37,11 +38,13 @@ const Comments: React.FC<{
   });
 
   const handleSendComment = () => {
-    mutateCreateComment({ token, postId, content: commentText });
+    if (!isEmpty(commentText.trim())) {
+      mutateCreateComment({ token, postId, content: commentText });
+    }
   };
 
-  return !isLoadingComments ? (
-    <Stack justify={"center"}>
+  return (
+    <Stack justify={"center"} gap={4}>
       {comments.map((comment) => (
         <Comment
           key={comment.id}
@@ -49,6 +52,7 @@ const Comments: React.FC<{
           userId={comment.userId}
         />
       ))}
+      <Skeleton visible={isLoadingComments} h={20} radius={"md"} />
       <TextInput
         value={commentText}
         placeholder={commentPlaceholderText}
@@ -66,8 +70,6 @@ const Comments: React.FC<{
         onChange={(event) => setCommentText(event.currentTarget.value)}
       />
     </Stack>
-  ) : (
-    <Loader />
   );
 };
 
