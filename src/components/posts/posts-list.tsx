@@ -1,7 +1,7 @@
 import { isNil } from "lodash";
 import { useMemo } from "react";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { Text, Flex, Grid, Stack, Title, Loader, Center } from "@mantine/core";
+import { Text, Flex, Grid, Stack, Title } from "@mantine/core";
 
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
@@ -20,8 +20,7 @@ const PostsList: React.FC<{
   const colSpan = useMemo(() => (posts.length < 3 ? 6 : 4), [posts.length]);
 
   return (
-    !isNil(posts) &&
-    (!isLoading ? (
+    !isNil(posts) && (
       <Flex mt={"xl"} justify={"space-evenly"}>
         {display === "stack" ? (
           <Stack justify={"center"} align={"center"}>
@@ -31,6 +30,7 @@ const PostsList: React.FC<{
                 key={post._id}
                 view={"feed"}
                 postSize={postSize}
+                isLoading={isLoading}
                 userId={post.userId}
                 content={post.content}
                 breed={post.breed}
@@ -49,6 +49,7 @@ const PostsList: React.FC<{
                   _id={post._id}
                   view={"profile"}
                   postSize={postSize}
+                  isLoading={isLoading}
                   userId={post.userId}
                   content={post.content}
                   breed={post.breed}
@@ -68,11 +69,7 @@ const PostsList: React.FC<{
           </Stack>
         )}
       </Flex>
-    ) : (
-      <Center>
-        <Loader size={"xl"} />
-      </Center>
-    ))
+    )
   );
 };
 

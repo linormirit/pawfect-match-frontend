@@ -31,7 +31,7 @@ const Overview: React.FC = () => {
 
   const {
     data: posts,
-    isLoading: isLoadingPosts,
+    isFetching: isLoadingPosts,
     refetch: refetchPosts,
   } = useQuery<PostType[], Error>({
     queryKey: ["fetchPosts"],

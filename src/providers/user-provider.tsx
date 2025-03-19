@@ -34,7 +34,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     isSuccess,
     data: userData,
     error: userError,
-    isLoading: userLoading,
+    isFetching: userLoading,
   } = useQuery<User, Error>({
     queryKey: ["fetchUserById", userId],
     queryFn: () => fetchUserById(userId, token?.accessToken),
