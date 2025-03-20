@@ -2,14 +2,17 @@ import { useState } from "react";
 import { IconBone } from "@tabler/icons-react";
 import { Button, Flex, Input, Stack, Title } from "@mantine/core";
 
+import { BreedList } from "../../types/dog";
 import { getAiResult } from "../../services/dog-service";
 
-const NewFeature: React.FC = () => {
+const NewFeature: React.FC<{ breedList: BreedList | null }> = ({
+  breedList,
+}) => {
   const [userDescription, setUserDescripton] = useState<string>("");
   const [aiResponse, setAiResponse] = useState<string>();
 
   const handleButtonCLick = async () => {
-    const response = await getAiResult(userDescription);
+    const response = await getAiResult(userDescription, breedList);
     setAiResponse(response);
   };
 

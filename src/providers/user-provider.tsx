@@ -1,12 +1,17 @@
-import { isEmpty } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { useNavigate } from "react-router-dom";
+import { CredentialResponse } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 
+import {
+  fetchToken,
+  googleLogIn,
+  fetchUserById,
+} from "../services/user-service";
 import { User } from "../types/user";
 import { UserContext } from "../contexts/user-context";
 import { TokenResponse } from "../types/token-response";
-import { fetchToken, fetchUserById } from "../services/user-service";
 
 interface UserProviderProps {
   children: ReactNode;
@@ -18,6 +23,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [password, setPassword] = useState<string>();
   const [loggedUser, setLoggedUser] = useState<User | null>(null);
   const [token, setToken] = useState<TokenResponse | null>(null);
+  const [googleResponse, setGoogleResponse] =
+    useState<CredentialResponse | null>(null);
 
   const {
     data: tokenData,
@@ -28,7 +35,19 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     mutationFn: fetchToken,
   });
 
-  const userId = useMemo(() => tokenData?._id ?? "", [tokenData]);
+  const {
+    data: googleTokenData,
+    error: googleTokenError,
+    isPending: googleTokenLoading,
+    mutate: mutateGoogleToken,
+  } = useMutation<TokenResponse, Error, CredentialResponse>({
+    mutationFn: googleLogIn,
+  });
+
+  const userId = useMemo(
+    () => tokenData?._id ?? googleTokenData?._id ?? "",
+    [tokenData, googleTokenData]
+  );
 
   const {
     isSuccess,
@@ -42,8 +61,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   });
 
   const loading = useMemo(
-    () => tokenLoading || userLoading,
-    [tokenLoading, userLoading]
+    () => tokenLoading || userLoading || googleTokenLoading,
+    [tokenLoading, userLoading, googleTokenLoading]
   );
 
   const errorToDisplay = useMemo<string>(() => {
@@ -52,11 +71,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         ? "Email or password are incorrect"
         : userError
         ? "Oops something went wrong"
+        : googleTokenError
+        ? "Google login error"
         : "";
     } else {
       return "";
     }
-  }, [email, password, tokenError, userError]);
+  }, [email, password, tokenError, googleTokenError, userError]);
 
   const login = (email: string, password: string) => {
     setEmail(email);
@@ -79,15 +100,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }, [mutateToken, email, password]);
 
+  useEffect(() => {
+    if (!isNil(googleResponse)) {
+      mutateGoogleToken(googleResponse);
+    }
+  }, [mutateGoogleToken, googleResponse]);
+
   useEffect(() => setLoggedUser(userData ?? null), [userData]);
-  useEffect(() => setToken(tokenData ?? null), [tokenData]);
+  useEffect(
+    () => setToken(tokenData ?? googleTokenData ?? null),
+    [tokenData, googleTokenData]
+  );
 
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("tokenData", JSON.stringify(tokenData));
+      localStorage.setItem(
+        "tokenData",
+        JSON.stringify(tokenData ?? googleTokenData)
+      );
     }
-  }, [tokenData, userData, isSuccess]);
+  }, [tokenData, googleTokenData, userData, isSuccess]);
 
   useEffect(() => {
     if (loggedUser && isSuccess) {
@@ -117,7 +150,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         loggedUser,
         error: errorToDisplay,
         token: token?.accessToken ?? "",
-        setLoggedUser
+        setLoggedUser,
+        googleResponse,
+        setGoogleResponse,
       }}
     >
       {children}

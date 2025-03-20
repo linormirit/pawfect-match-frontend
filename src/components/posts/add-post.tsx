@@ -14,7 +14,6 @@ import {
 import { flatMap, isNil } from "lodash";
 import { useForm } from "@mantine/form";
 import { useMemo, useState } from "react";
-import { useFetch } from "@mantine/hooks";
 import { useMutation, QueryObserverResult } from "@tanstack/react-query";
 
 import {
@@ -26,23 +25,25 @@ import {
 } from "../../strings";
 import { Post } from "../../types/post";
 import { BreedList } from "../../types/dog";
-import { dogApi } from "../../services/dog-service";
 import { useUser } from "../../contexts/user-context";
 import { uploadFile } from "../../services/file-service";
 import { createPost } from "../../services/post-service";
 
 const AddPost: React.FC<{
+  breedList: BreedList | null;
+  breedListError: Error | null;
+  breedListLoading: boolean;
   setActiveTab: React.Dispatch<React.SetStateAction<string | null>>;
   refetchPosts: () => Promise<QueryObserverResult<Post[], Error>>;
-}> = ({ setActiveTab, refetchPosts }) => {
+}> = ({
+  setActiveTab,
+  refetchPosts,
+  breedList,
+  breedListError,
+  breedListLoading,
+}) => {
   const [postImage, setPostImage] = useState<File | null>(null);
   const { token, loggedUser } = useUser();
-
-  const {
-    data: breedList,
-    error,
-    loading,
-  } = useFetch<BreedList>(dogApi.fetchBreedsList);
 
   const { mutate: mutateCreatePost } = useMutation<
     Post,
@@ -75,18 +76,18 @@ const AddPost: React.FC<{
   });
 
   const breeds: string[] = useMemo(() => {
-    if (!loading) {
-      if (!error) {
+    if (!breedListLoading) {
+      if (!breedListError) {
         return flatMap(breedList?.message, (subBreeds, breed) => {
           return subBreeds.map((subBreed) => `${subBreed} ${breed}`);
         });
       } else {
-        return [error.message];
+        return [breedListError.message];
       }
     } else {
       return [];
     }
-  }, [breedList, loading, error]);
+  }, [breedList, breedListLoading, breedListError]);
 
   const imageUrl = useMemo(() => {
     if (postImage) {
@@ -115,7 +116,15 @@ const AddPost: React.FC<{
   };
 
   return (
-    <Card w={800} shadow={"sm"} radius={"md"} mt={"xl"} p={'xl'} ml={'12vw'} withBorder>
+    <Card
+      w={800}
+      shadow={"sm"}
+      radius={"md"}
+      mt={"xl"}
+      p={"xl"}
+      ml={"12vw"}
+      withBorder
+    >
       <Stack gap={"lg"}>
         <form onSubmit={handlePostSubmit}>
           <Flex align={"center"} justify={"space-between"} ml={"46%"}>
@@ -159,14 +168,14 @@ const AddPost: React.FC<{
                 </Button>
               )}
             </Flex>
-            <Image src={imageUrl} radius={"sm"} maw={160} mah={180}/>
+            <Image src={imageUrl} radius={"sm"} maw={160} mah={180} />
           </Flex>
           <Autocomplete
             w={300}
             label={breedAutocompleteLabel}
             placeholder={autoCompletePlaceholder}
             data={breeds}
-            rightSection={loading ? <Loader size={"sm"} /> : null}
+            rightSection={breedListLoading ? <Loader size={"sm"} /> : null}
             {...form.getInputProps("breed")}
           />
         </form>

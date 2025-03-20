@@ -14,13 +14,16 @@ import {
 } from "@tabler/icons-react";
 import { isNil } from "lodash";
 import { useMemo, useState } from "react";
+import { useFetch } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 
 import { Logo } from "../home/logo";
 import { menuColor } from "../../consts";
+import { BreedList } from "../../types/dog";
 import { AddPost } from "../posts/add-post";
 import { PostsList } from "../posts/posts-list";
 import { Post as PostType } from "../../types/post";
+import { dogApi } from "../../services/dog-service";
 import { useUser } from "../../contexts/user-context";
 import { UserProfile } from "../profile/user-profile";
 import { fetchPosts } from "../../services/post-service";
@@ -38,6 +41,12 @@ const Overview: React.FC = () => {
     queryFn: () => fetchPosts(token),
     enabled: !isNil(token),
   });
+
+  const {
+    data: breedList,
+    error: breedListError,
+    loading: breedListLoading,
+  } = useFetch<BreedList>(dogApi.fetchBreedsList);
 
   const isLoading = useMemo(
     () => isLoadingPosts || isLoadingLoggedUser,
@@ -96,6 +105,7 @@ const Overview: React.FC = () => {
                   display={"stack"}
                   isFeatureFlag={true}
                   isLoading={isLoading}
+                  breedList={breedList}
                   refetchPosts={refetchPosts}
                 />
               </Center>
@@ -113,6 +123,9 @@ const Overview: React.FC = () => {
           <Tabs.Panel value={"addPost"}>
             <Center>
               <AddPost
+                breedList={breedList}
+                breedListError={breedListError}
+                breedListLoading={breedListLoading}
                 setActiveTab={setActiveTab}
                 refetchPosts={refetchPosts}
               />

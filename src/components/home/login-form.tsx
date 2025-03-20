@@ -13,10 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { pawGreen } from "../../consts";
 import { loginText, signUpText } from "../../strings";
 import { useUser } from "../../contexts/user-context";
+import { GoogleLogin } from "@react-oauth/google";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { login, error, loading } = useUser();
+  const { login, error, loading, setGoogleResponse } = useUser();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -57,12 +58,19 @@ const LoginForm: React.FC = () => {
             {...form.getInputProps("password")}
           />
           {loading ? (
-            <Loader size={'sm'}/>
+            <Loader size={"sm"} />
           ) : (
             <Text style={{ color: "red" }}>{error}</Text>
           )}
           <Button type="submit">{loginText}</Button>
           <Card.Section withBorder inheritPadding>
+            <Group justify="center" mt={"sm"} mb={"sm"}>
+              <GoogleLogin
+                onSuccess={(googleResponse) =>
+                  setGoogleResponse(googleResponse)
+                }
+              />
+            </Group>
             <Group justify="center" mt={"sm"} mb={"sm"}>
               <Button type="button" color={pawGreen} onClick={goToSignUp}>
                 {signUpText}
