@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext } from "react";
+import { CredentialResponse } from "@react-oauth/google";
 
 import { User } from "../types/user";
 
@@ -10,7 +11,11 @@ interface UserContextType {
   error: string;
   login: (email: string, password: string) => void;
   logout: () => void;
-  setLoggedUser: React.Dispatch<React.SetStateAction<User | null>>
+  setLoggedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  googleResponse: CredentialResponse | null;
+  setGoogleResponse: React.Dispatch<
+    React.SetStateAction<CredentialResponse | null>
+  >;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

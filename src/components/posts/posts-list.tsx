@@ -6,6 +6,8 @@ import { Text, Flex, Grid, Stack, Title } from "@mantine/core";
 import { Post } from "./post";
 import { Post as PostType } from "../../types/post";
 import { newFeatureSubText, newFeatureText } from "../../strings";
+import { NewFeature } from "../new-feature/new-feature";
+import { BreedList } from "../../types/dog";
 
 const PostsList: React.FC<{
   postSize: number;
@@ -16,7 +18,16 @@ const PostsList: React.FC<{
   refetchPosts: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<PostType[], Error>>;
-}> = ({ posts, isLoading, display, isFeatureFlag, postSize, refetchPosts }) => {
+  breedList?: BreedList | null;
+}> = ({
+  posts,
+  isLoading,
+  display,
+  isFeatureFlag,
+  postSize,
+  breedList,
+  refetchPosts,
+}) => {
   const colSpan = useMemo(() => (posts.length < 3 ? 6 : 4), [posts.length]);
 
   return (
@@ -62,10 +73,11 @@ const PostsList: React.FC<{
             ))}
           </Grid>
         )}
-        {isFeatureFlag && (
+        {isFeatureFlag && !isNil(breedList) && (
           <Stack w={"26%"}>
             <Title>{newFeatureText}</Title>
             <Text size={"xl"}>{newFeatureSubText}</Text>
+            <NewFeature breedList={breedList} />
           </Stack>
         )}
       </Flex>

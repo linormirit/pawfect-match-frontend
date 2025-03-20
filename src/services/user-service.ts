@@ -1,3 +1,5 @@
+import { CredentialResponse } from "@react-oauth/google";
+
 import { User } from "../types/user";
 import { serverBaseUrl } from "../consts";
 import { TokenResponse } from "../types/token-response";
@@ -8,6 +10,7 @@ const userApi = {
   register: `${serverBaseUrl}/auth/register`,
   fetchUsers: `${serverBaseUrl}/users`,
   updateUserById: `${serverBaseUrl}/users`,
+  googleLogIn: `${serverBaseUrl}/auth/google`,
 };
 
 const fetchToken = async ({
@@ -100,6 +103,24 @@ const register = async ({
   return response.json();
 };
 
+const googleLogIn = async (
+  googleResponse: CredentialResponse
+): Promise<TokenResponse> => {
+  const response = await fetch(userApi.googleLogIn, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(googleResponse),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to log in with Google");
+  }
+
+  return response.json();
+};
+
 const fetchUsers = async (token: string): Promise<User[]> => {
   const response = await fetch(userApi.fetchUsers, {
     method: "GET",
@@ -116,4 +137,11 @@ const fetchUsers = async (token: string): Promise<User[]> => {
   return response.json();
 };
 
-export { fetchToken, fetchUserById, register, fetchUsers, updateUserById };
+export {
+  fetchToken,
+  fetchUserById,
+  register,
+  fetchUsers,
+  updateUserById,
+  googleLogIn,
+};
